@@ -15,5 +15,5 @@ public class OAuthIdentity {
     private String providerId;
 
     @OneToOne
-    private User user;
+    private AppUser user;
 }

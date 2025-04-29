@@ -8,7 +8,7 @@ import jakarta.persistence.OneToMany;
 import java.util.List;
 
 @Entity
-public class User {
+public class AppUser {
     @Id
     @GeneratedValue
     private Long id;

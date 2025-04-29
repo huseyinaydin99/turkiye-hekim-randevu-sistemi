@@ -18,7 +18,7 @@ public class Appointment {
     private String noteToDoctor;
 
     @ManyToOne
-    private User user;
+    private AppUser user;
 
     @ManyToOne
     private Doctor doctor;
