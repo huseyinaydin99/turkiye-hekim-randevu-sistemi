@@ -6,20 +6,36 @@ import lombok.*;
 import java.util.List;
 
 @Entity
+@Table(name = "app_user")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class AppUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "app_user_seq",
+            sequenceName = "app_user_seq",
+            allocationSize = 1  // Veritabanındaki sekans artış büyüklüğü ile uyumlu
+    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "app_user_seq")
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "full_name", nullable = false)
     private String fullName;
+
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    @Column(name = "national_id")
     private String nationalId;
-    private String password; // E-devlet OAuth2 ile gerekirse null olabilir
-    private String role; // PATIENT, ADMIN, DOCTOR
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "role")
+    private String role;
 
     @OneToMany(mappedBy = "user")
     private List<Appointment> appointments;

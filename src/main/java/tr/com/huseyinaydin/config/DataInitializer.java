@@ -1,8 +1,9 @@
-package tr.com.huseyinaydin.config;
+/*package tr.com.huseyinaydin.config;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import tr.com.huseyinaydin.entities.*;
 import tr.com.huseyinaydin.repositories.*;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@Component
+@Configuration
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
 
@@ -89,4 +90,4 @@ public class DataInitializer implements CommandLineRunner {
         appUserRepository.save(user);
         doctorRepository.save(doctor);
     }
-}
+}*/

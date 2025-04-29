@@ -1,5 +1,0 @@
-CREATE TABLE district (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    province_id INT NOT NULL REFERENCES province(id) ON DELETE CASCADE
-);

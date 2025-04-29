@@ -6,6 +6,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "appointment")
 @Data
 @Builder
 @ToString
@@ -14,16 +15,29 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Appointment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "appointment_seq",
+            sequenceName = "appointment_seq",
+            allocationSize = 1  // Veritabanındaki sekans artış büyüklüğü ile uyumlu
+    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "appointment_seq")
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "appointment_date_time", nullable = false)
     private LocalDateTime appointmentDateTime;
-    private boolean attended; // Gidildi mi gidilmedi mi
+
+    @Column(name = "attended", nullable = false)
+    private boolean attended;
+
+    @Column(name = "note_to_doctor")
     private String noteToDoctor;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private AppUser user;
 
     @ManyToOne
+    @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 }
