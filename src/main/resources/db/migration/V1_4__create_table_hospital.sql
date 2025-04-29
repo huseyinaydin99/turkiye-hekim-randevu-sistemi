@@ -1,0 +1,5 @@
+CREATE TABLE hospital (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    district_id INT NOT NULL REFERENCES district(id) ON DELETE CASCADE
+);
