@@ -1,9 +1,17 @@
 package tr.com.huseyinaydin.dtos.register;
 
-public record RegisterResponse(
-        String fullName,
-        String email,
-        String nationalId,
-        String password
-) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class RegisterResponse {
+    private Long id;
+    private String fullName;
+    private String email;
+    private String nationalId;
+    private String password;
+    private String role;
 }

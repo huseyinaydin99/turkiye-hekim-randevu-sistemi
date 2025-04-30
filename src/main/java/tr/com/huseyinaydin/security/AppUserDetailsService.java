@@ -1,5 +1,6 @@
 package tr.com.huseyinaydin.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,11 +11,8 @@ import tr.com.huseyinaydin.repositories.AppUserRepository;
 @Service
 public class AppUserDetailsService implements UserDetailsService {
 
+    @Autowired
     private AppUserRepository userRepository;
-
-    public AppUserDetailsService(AppUserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     public AppUserDetailsService() {
     }

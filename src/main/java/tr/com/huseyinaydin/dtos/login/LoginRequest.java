@@ -1,7 +1,13 @@
 package tr.com.huseyinaydin.dtos.login;
 
-public record LoginRequest(
-        String email,
-        String password
-) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class LoginRequest{
+    private String email;
+    private String password;
 }

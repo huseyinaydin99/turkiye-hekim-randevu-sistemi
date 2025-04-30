@@ -1,10 +1,11 @@
 package tr.com.huseyinaydin.services;
 
+import tr.com.huseyinaydin.dtos.login.AllFieldLoginResponse;
 import tr.com.huseyinaydin.dtos.login.LoginRequest;
-import tr.com.huseyinaydin.dtos.login.LoginResponse;
-import tr.com.huseyinaydin.dtos.register.RegisterRequest;
+import tr.com.huseyinaydin.dtos.register.RegisterResponse;
 
 public interface AppUserService {
-    LoginResponse register(RegisterRequest dto);
-    LoginResponse login(LoginRequest request);
+    RegisterResponse register(RegisterResponse dto);
+    AllFieldLoginResponse login(LoginRequest request);
+    boolean isUserLoggedIn();
 }
