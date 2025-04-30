@@ -44,7 +44,7 @@ public class AppUserController {
     @PostMapping("/clogin")
     public String customLoginUser(@RequestParam String email, @RequestParam String password) {
         LoginRequest loginRequest = new LoginRequest(email, password);
-        System.out.println("customLoginUser: " + loginRequest.toString());
+        //System.out.println("customLoginUser: " + loginRequest.toString());
 
         // Kullanıcının zaten giriş yapıp yapmadığını kontrol et
         if (appUserService.isUserLoggedIn()) {
@@ -54,7 +54,6 @@ public class AppUserController {
 
         // Eğer kullanıcı henüz giriş yapmamışsa, login işlemi yapılır
         appUserService.login(loginRequest);
-        // Başarılı giriş sonrası yönlendirme
-        return "login-success";
+        return appUserService.isUserLoggedIn() ? "login-success" : "login-error";
     }
 }

@@ -2,6 +2,7 @@ package tr.com.huseyinaydin.exceptions.handlers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -20,7 +21,13 @@ public class GlobalExceptionHandler {
         // Hata mesajını yönlendirme ile birlikte ekleyebiliriz
         redirectAttributes.addFlashAttribute("error", ex.getMessage());
         // Login sayfasına yönlendirme
-        return "redirect:/login?error=true";
+        return "redirect:/ulogin?error=true";
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public String handleAuthenticationException(AuthenticationException ex, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("error", "Kullanıcı adı veya şifre hatalı!");
+        return "redirect:/ulogin?error=true";
     }
 
     // Diğer özel exception'lar için handler'lar ekleyebilirim

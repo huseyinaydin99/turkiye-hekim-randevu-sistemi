@@ -18,9 +18,9 @@
   <button type="submit">Giriş Yap (Özel Login)</button>
 </form>
 
-<p th:if="${param.error}">
-  <span style="color:red;">Giriş yaparken bir hata oluştu. Lütfen tekrar deneyin!</span>
-</p>
+<div th:if="${error}" class="alert alert-danger">
+  <p style="color:red;" th:text="${error}"></p>
+</div>
 
 <p>Hesabınız yok mu? <a href="/register">Kayıt Olun</a></p>
 
