@@ -3,10 +3,16 @@ package tr.com.huseyinaydin.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import tr.com.huseyinaydin.dtos.login.LoginRequest;
 import tr.com.huseyinaydin.dtos.register.RegisterResponse;
 import tr.com.huseyinaydin.dtos.register.RegisterRequest;
 import tr.com.huseyinaydin.services.AppUserService;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 
 @Controller
 @RequestMapping
@@ -42,18 +48,20 @@ public class AppUserController {
     // Giriş işlemi
     // Özel Giriş işlemi - Spring Security ile çakışmayan endpoint
     @PostMapping("/clogin")
-    public String customLoginUser(@RequestParam String email, @RequestParam String password) {
+    public ModelAndView customLoginUser(@RequestParam String email, @RequestParam String password) throws UnsupportedEncodingException {
         LoginRequest loginRequest = new LoginRequest(email, password);
-        //System.out.println("customLoginUser: " + loginRequest.toString());
-
-        // Kullanıcının zaten giriş yapıp yapmadığını kontrol et
-        if (appUserService.isUserLoggedIn()) {
-            // Eğer kullanıcı zaten giriş yapmışsa, ana sayfaya veya dashboard'a yönlendir
-            return "login-success";  // Örneğin ana sayfa
-        }
-
         // Eğer kullanıcı henüz giriş yapmamışsa, login işlemi yapılır
-        appUserService.login(loginRequest);
-        return appUserService.isUserLoggedIn() ? "login-success" : "login-error";
+        var user = appUserService.login(loginRequest);
+        ModelAndView modelAndView = new ModelAndView("login-success");
+
+        if(user != null){
+            modelAndView.addObject("nameSurname", user.getFullName());
+            return modelAndView;
+        }
+        else {
+            ModelAndView error = new ModelAndView("login-error");
+            error.addObject("errorMessage", "Giriş başarısız oldu.");
+            return error;
+        }
     }
 }

@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Giriş Başarılı</title>
 </head>
 <body>
-<center>giriş başarılı</center>
+<center>
+    <div th:if="${nameSurname}" class="alert alert-success">
+        <p style="color:green;" th:text="'Giriş başarılı. Hoşgeldiniz sayın: ' + ${nameSurname}"></p>
+    </div>
+</center>
 </body>
 </html>

@@ -8,7 +8,7 @@
 
 <h2>Kayıt Ol</h2>
 
-<form action="#" th:action="@{/auth/register}" th:object="${registerRequest}" method="post">
+<form action="#" th:action="@{/register}" th:object="${registerRequest}" method="post">
     <label for="fullName">Ad Soyad:</label>
     <input type="text" id="fullName" th:field="*{fullName}" required /><br/>
 
@@ -24,7 +24,7 @@
     <button type="submit">Kayıt Ol</button>
 </form>
 
-<p>Hesabınız varsa <a href="/auth/login">Giriş Yap</a></p>
+<p>Hesabınız varsa <a href="/ulogin">Giriş Yap</a></p>
 
 </body>
 </html>

@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import tr.com.huseyinaydin.dtos.login.AllFieldLoginResponse;
@@ -55,7 +56,8 @@ public class AppUserServiceImpl implements AppUserService {
 
         // AuthenticationManager ile kimlik doğrulama yapılır
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
-
+        // 🔥 Bu satır olmazsa isUserLoggedIn() daima false olur
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         // Eğer doğrulama başarılıysa, başarılı yanıt döndürülür (Örneğin bir JWT token verilebilir)
         if (authentication.isAuthenticated()) {
             AppUser user = userRepository.findByEmail(request.getEmail())
@@ -67,9 +69,58 @@ public class AppUserServiceImpl implements AppUserService {
         throw new InvalidLoginException("Bu e-posta ile kayıtlı kullanıcı bulunamadı!");  // Hatalı giriş
     }
 
-    // Kullanıcının login durumunu kontrol etme metodu (parametre gerektirmez)
+    /**
+     * Mevcut oturum açmış kullanıcı bilgilerini döndürür.
+     * Kullanıcı oturum açmamışsa null döner.
+     */
+    public UserDetails getCurrentUserDetails() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null &&
+                authentication.isAuthenticated() &&
+                !(authentication instanceof AnonymousAuthenticationToken)) {
+
+            return (UserDetails) authentication.getPrincipal();
+        }
+        return null;
+    }
+
+    /**
+     * Mevcut oturum açmış kullanıcının entity nesnesini döndürür.
+     * Kullanıcı oturum açmamışsa null döner.
+     */
+    public AppUser getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null &&
+                authentication.isAuthenticated() &&
+                !(authentication instanceof AnonymousAuthenticationToken)) {
+
+            String email = authentication.getName(); // Kullanıcı adı veya e-posta
+            return userRepository.findByEmail(email).orElse(null);
+        }
+        return null;
+    }
+
+    /**
+     * Mevcut oturum açmış kullanıcının DTO nesnesini döndürür.
+     * Kullanıcı oturum açmamışsa null döner.
+     */
+    public AllFieldLoginResponse getCurrentUserResponse() {
+        AppUser user = getCurrentUser();
+        if (user != null) {
+            return modelMapper.map(user, AllFieldLoginResponse.class);
+        }
+        return null;
+    }
+
+    /**
+     * Kullanıcının giriş yapmış olup olmadığını kontrol eder.
+     */
     public boolean isUserLoggedIn() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken);
+        return authentication != null &&
+                authentication.isAuthenticated() &&
+                !(authentication instanceof AnonymousAuthenticationToken);
     }
 }
