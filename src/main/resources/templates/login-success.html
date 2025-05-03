@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html lang="tr" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -10,5 +11,214 @@
         <p style="color:green;" th:text="'Giriş başarılı. Hoşgeldiniz sayın: ' + ${nameSurname}"></p>
     </div>
 </center>
+</body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Doktor Randevu Formu</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        html, body {
+          margin: 0;
+          padding: 0;
+          height: 100%;
+          overflow-x: hidden;
+          overflow-y: auto;
+        }
+
+       body {
+          background: url('/images/backgrounds/hospital.jpg') no-repeat center center fixed;
+          background-size: cover;
+          padding-top: 60px;
+        }
+
+        .navbar {
+          padding-top: 0.3rem;
+          padding-bottom: 0.3rem;
+        }
+
+        .navbar-brand {
+          font-size: 1rem;
+          font-weight: 500;
+        }
+
+        .navbar-brand img {
+          width: 32px;
+          height: 32px;
+        }
+
+        .form-container {
+          background-color: rgba(255, 255, 255, 0.85);
+          padding: 35px;
+          border-radius: 15px;
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+          max-width: 680px;
+          width: 100%;
+        }
+
+        .search-form {
+          max-width: 680px;
+          width: 100%;
+        }
+
+        .search-form input,
+        .search-form button {
+          height: 42px;
+          font-size: 0.95rem;
+        }
+
+        .dropdown-menu {
+          animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .invalid-feedback {
+          font-size: 0.875rem;
+          color: #dc3545;
+          margin-top: 4px;
+        }
+
+        footer {
+          padding-top: 10px; /* Üst kısma 10px boşluk */
+          background-color: rgba(248, 249, 250, 0.95); /* %5 şeffaflık */
+          padding: 10px 0;
+          text-align: center;
+          backdrop-filter: blur(7px);
+          -webkit-backdrop-filter: blur(6px);
+        }
+
+        @media (max-width: 768px) {
+          .navbar-brand {
+            font-size: 0.9rem;
+          }
+
+          .form-container {
+            padding: 25px;
+          }
+
+          .search-form input,
+          .search-form button {
+            font-size: 0.9rem;
+          }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 🔷 Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
+    <div class="container-fluid align-items-center">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="/images/health-logo2.jpg" alt="logo" class="me-2" />
+            <!--🏥 -->
+            Aydın Sağlık Merkezi
+        </a>
+
+        <div class="mx-auto w-100 d-flex justify-content-center">
+            <form class="d-flex search-form w-100 px-2">
+                <input class="form-control me-2" type="search" placeholder="Doktor, Branş, Klinik..." />
+                <button class="btn btn-outline-primary" type="submit">Ara</button>
+            </form>
+        </div>
+
+        <div class="d-flex align-items-center">
+            <span class="me-3 mb-0" style="white-space: nowrap;">Hoş geldiniz, <strong>Hüseyin</strong></span>
+            <div class="dropdown me-2">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    🔔 Bildirimler
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">📅 Yarınki randevunuz saat 14:00</a></li>
+                    <li><a class="dropdown-item" href="#">🧾 Tahlil sonuçlarınız hazır</a></li>
+                    <li><a class="dropdown-item" href="#">💬 Dr. Ayşe Demir mesaj bıraktı</a></li>
+                </ul>
+            </div>
+            <a href="#" class="btn btn-outline-danger btn-sm">Çıkış</a>
+        </div>
+    </div>
+</nav>
+
+<!-- 🟩 Form Alanı -->
+<div class="container d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 150px);">
+    <div class="form-container mt-4">
+        <h2 class="text-center mb-4">Doktor Randevusu Al</h2>
+        <form class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="appointmentDateTime" class="form-label">Randevu Tarihi ve Saati</label>
+                <input type="datetime-local" class="form-control" id="appointmentDateTime" required />
+                <div class="invalid-feedback">Bu alan boş geçilemez!</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="noteToDoctor" class="form-label">Doktora Not</label>
+                <textarea class="form-control" id="noteToDoctor" rows="3" required></textarea>
+                <div class="invalid-feedback">Not bırakmanız gerekiyor!</div>
+            </div>
+
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="attended" />
+                <label class="form-check-label" for="attended">Daha önce geldim (kontrol için)</label>
+            </div>
+
+            <div class="mb-3">
+                <label for="user" class="form-label">Kullanıcı</label>
+                <select class="form-select" id="user" required>
+                    <option selected disabled value="">Seçiniz</option>
+                    <option value="1">Hüseyin Aydın</option>
+                    <option value="2">Mehmet Yılmaz</option>
+                </select>
+                <div class="invalid-feedback">Lütfen bir kullanıcı seçin!</div>
+            </div>
+
+            <div class="mb-4">
+                <label for="doctor" class="form-label">Doktor</label>
+                <select class="form-select" id="doctor" required>
+                    <option selected disabled value="">Seçiniz</option>
+                    <option value="1">Dr. Ayşe Demir</option>
+                    <option value="2">Dr. Ahmet Yıldız</option>
+                </select>
+                <div class="invalid-feedback">Lütfen bir doktor seçin!</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Randevuyu Kaydet</button>
+        </form>
+    </div>
+</div>
+
+<br />
+
+<!-- 🔻 Footer -->
+<footer>
+    <div class="container">
+        <p class="mb-0">© 2025 Aydın Sağlık Merkezi. Tüm hakları saklıdır.</p>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    (() => {
+      'use strict';
+      const forms = document.querySelectorAll('.needs-validation');
+      forms.forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    })();
+</script>
 </body>
 </html>
