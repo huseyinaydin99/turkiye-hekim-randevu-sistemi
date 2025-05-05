@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import tr.com.huseyinaydin.dtos.login.AllFieldLoginResponse;
 import tr.com.huseyinaydin.dtos.login.LoginRequest;
+import tr.com.huseyinaydin.dtos.register.RegisterRequest;
 import tr.com.huseyinaydin.dtos.register.RegisterResponse;
 import tr.com.huseyinaydin.entities.AppUser;
 import tr.com.huseyinaydin.exceptions.InvalidLoginException;
@@ -33,7 +34,7 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public RegisterResponse register(RegisterResponse dto) {
+    public RegisterResponse register(RegisterRequest dto) {
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new IllegalArgumentException("Bu e-posta zaten kayıtlı!");
         }
@@ -41,6 +42,7 @@ public class AppUserServiceImpl implements AppUserService {
         AppUser user = AppUser.builder()
                 .fullName(dto.getFullName())
                 .email(dto.getEmail())
+                .nationalId(dto.getNationalId())
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .role("ROLE_USER")
                 .build();

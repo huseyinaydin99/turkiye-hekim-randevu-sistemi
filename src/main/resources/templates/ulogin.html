@@ -121,6 +121,40 @@
         color: #4e73df;
         text-decoration: underline;
     }
+    /* Hata durumunda input alanlarını kırmızı yapar */
+    .error-field {
+        border-color: #ff4444;
+        background-color: #ffeeee;
+    }
+
+    /* Hata mesajları */
+    .error-message {
+        color: #ff4444;
+        font-size: 0.9em;
+        margin-top: 5px;
+    }
+
+    /* Başarılı giriş sonrası mesaj */
+    .success-message {
+        color: #00C851;
+        font-weight: bold;
+    }
+    .invalid-feedback {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545; /* Bootstrap error rengi */
+    }
+
+    .is-invalid {
+        border-color: #dc3545;
+        padding-right: calc(1.5em + 0.75rem);
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right calc(0.375em + 0.1875rem) center;
+        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    }
   </style>
 </head>
 <body>
@@ -128,31 +162,48 @@
   <div class="login-container">
     <h2 class="form-title">Giriş Yap</h2>
 
-    <form th:action="@{/clogin}" method="post">
+    <!-- Genel Hata Mesajı -->
+    <div th:if="${errorMessage != null}" class="error-message">
+      <span th:text="${errorMessage}"></span>
+    </div>
+
+    <form th:action="@{/clogin}" th:object="${loginRequest}" method="post">
       <div class="mb-4">
         <label for="email" class="form-label">E-posta:</label>
         <input type="email" class="form-control" id="email" name="email" required>
+        <div th:if="${#fields.hasErrors('email')}" class="error-message">
+          <span th:errors="*{email}"></span>
+        </div>
       </div>
 
       <div class="mb-4">
         <label for="customPassword" class="form-label">Şifre:</label>
         <div class="input-group">
-          <input type="password" class="form-control" id="customPassword" name="password" required>
+          <input type="password" class="form-control" id="customPassword"
+                 name="password" required
+                 th:field="*{password}"
+                 th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''">
           <span class="input-group-text password-toggle" onclick="togglePassword('customPassword')">
-                        <i class="bi bi-eye"></i>
-                    </span>
+            <i class="bi bi-eye"></i>
+        </span>
         </div>
-        <div class="forgot-password">
+
+        <!-- Hata mesajı input-group dışına alındı -->
+        <div th:if="${#fields.hasErrors('password')}" class="invalid-feedback">
+          <span th:errors="*{password}"></span>
+        </div>
+
+        <div th:if="${error}" class="invalid-feedback">
+          <span th:text="${error}"></span>
+        </div>
+
+        <div class="forgot-password mt-2">
           <a href="/forgot-password">Şifremi Unuttum</a>
         </div>
       </div>
 
       <button type="submit" class="btn btn-primary btn-login">Giriş Yap</button>
     </form>
-
-    <div th:if="${error}" class="alert alert-danger error-message">
-      <span th:text="${error}"></span>
-    </div>
 
     <p class="register-link">Hesabınız yok mu? <a href="/register">Kayıt Olun</a></p>
   </div>
