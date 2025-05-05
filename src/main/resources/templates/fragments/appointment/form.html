@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/appointment/head :: common-head('Doktor Randevu Formu')}">
+</head>
+
+<body>
+<!-- Navbar -->
+<div th:replace="~{fragments/appointment/navbar :: common-navbar}"></div>
+
+<!-- Giriş Başarılı Mesajı -->
+<!--
+<div th:replace="~{fragments/appointment/login-success-message :: login-success-message}"></div>
+-->
+<!-- Form Alanı -->
+<!--
+<div class="container d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 150px);">
+  <div class="form-container mt-4">
+    <h2 class="text-center mb-4">Doktor Randevusu Al</h2>
+    <form class="needs-validation" novalidate>
+      <div class="mb-3">
+        <label for="appointmentDateTime" class="form-label">Randevu Tarihi ve Saati</label>
+        <input type="datetime-local" class="form-control" id="appointmentDateTime" required />
+        <div class="invalid-feedback">Bu alan boş geçilemez!</div>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Randevuyu Kaydet</button>
+    </form>
+  </div>
+</div>
+-->
+
+<!-- Footer -->
+<div th:replace="~{fragments/appointment/footer :: common-footer}"></div>
+
+<!-- Scripts -->
+<div th:replace="~{fragments/appointment/scripts :: common-scripts}"></div>
+</body>
+</html>s

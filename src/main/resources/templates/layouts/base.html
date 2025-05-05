@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="~{fragments/appointment/head :: common-head(${pageTitle})}"></head>
+
+<body>
+<!-- Navbar Fragment -->
+<div th:replace="~{fragments/appointment/navbar :: common-navbar}"></div>
+
+<!-- Alert Messages Fragment -->
+<div layout:fragment="alerts" th:replace="~{fragments/appointment/alerts :: success-message}"></div>
+
+<!-- Dynamic Content Section -->
+<main layout:fragment="content" class="container">
+    <!-- Bu kısım extend eden sayfalarda doldurulacak -->
+</main>
+<br style="height: 10px; display: block; content: '';" />
+<!-- Footer Fragment -->
+<div th:replace="~{fragments/appointment/footer :: common-footer}"></div>
+
+<!-- Scripts Fragment -->
+<div th:replace="~{fragments/appointment/scripts :: common-scripts}"></div>
+</body>
+</html>
