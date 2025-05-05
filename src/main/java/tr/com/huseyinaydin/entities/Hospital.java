@@ -34,5 +34,8 @@ public class Hospital {
     private District district;
 
     @OneToMany(mappedBy = "hospital")
+    private List<Clinic> clinics;
+
+    @OneToMany(mappedBy = "hospital")
     private List<Doctor> doctors;
 }

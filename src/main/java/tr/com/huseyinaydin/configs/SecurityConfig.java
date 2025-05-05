@@ -1,4 +1,4 @@
-package tr.com.huseyinaydin.config;
+package tr.com.huseyinaydin.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

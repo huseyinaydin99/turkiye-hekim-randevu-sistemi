@@ -26,8 +26,16 @@ public class Clinic {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "hospital_id")
+    @JoinColumn(name = "hospital_id", nullable = false)
     private Hospital hospital;
+
+    @ManyToOne
+    @JoinColumn(name = "district_id", nullable = false)
+    private District district;
+
+    @ManyToOne
+    @JoinColumn(name = "city_id", nullable = false)
+    private City city;
 
     @OneToMany(mappedBy = "clinic")
     private List<Doctor> doctors;
