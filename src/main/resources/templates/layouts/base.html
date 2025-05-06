@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head th:replace="~{fragments/appointment/head :: common-head(${pageTitle})}"></head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 <!-- Navbar Fragment -->
 <div th:replace="~{fragments/appointment/navbar :: common-navbar}"></div>
 
@@ -11,7 +11,7 @@
 <div layout:fragment="alerts" th:replace="~{fragments/appointment/alerts :: success-message}"></div>
 
 <!-- Dynamic Content Section -->
-<main layout:fragment="content" class="container">
+<main layout:fragment="content" class="container flex-fill">
     <!-- Bu kısım extend eden sayfalarda doldurulacak -->
 </main>
 <br style="height: 10px; display: block; content: '';" />

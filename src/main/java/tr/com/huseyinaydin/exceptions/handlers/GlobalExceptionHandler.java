@@ -13,10 +13,10 @@ import tr.com.huseyinaydin.dtos.errors.ErrorResponse;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(InvalidLoginException.class)
+    /*@ExceptionHandler(InvalidLoginException.class)
     public ResponseEntity<String> handleInvalidLoginException(InvalidLoginException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-    }
+    }*/
 
     @ExceptionHandler(InvalidLoginException.class)
     public String handleInvalidLoginException(InvalidLoginException ex, RedirectAttributes redirectAttributes) {
@@ -51,15 +51,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    /*@ExceptionHandler(Exception.class)
+    @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneralException(Exception ex) {
         ErrorResponse response = new ErrorResponse(
                 "INTERNAL_SERVER_ERROR",
-                "An unexpected error occurred",
+                "Beklenmeyen bir hata oluştu kardeş hayırlısı olsun :-)",
                 System.currentTimeMillis()
         );
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }*/
+    }
 
     // Diğer özel exception'lar için handler'lar ekleyebilirim
 }
