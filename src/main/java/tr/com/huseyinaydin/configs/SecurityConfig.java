@@ -2,6 +2,7 @@ package tr.com.huseyinaydin.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -21,7 +22,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/register", "/ulogin", "/login-success?nameSurname=*",  "/clogin", "/images/**", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/register", "/ulogin", "/login-success?nameSurname=*",  "/clogin", "/images/**", "/css/**", "/js/**", "/api/v1/appointments/search/**").permitAll()
+                        //.requestMatchers(HttpMethod.GET, "/api/v1/appointments/search/**").permitAll()
+                        //.requestMatchers(HttpMethod.POST, "/api/v1/appointments/search/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Randevu Sonuçları</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="mb-4">Uygun Randevular</h2>
+
+    <div th:if="${#lists.isEmpty(appointments)}" class="alert alert-info">
+        Seçtiğiniz kriterlere uygun randevu bulunamadı.
+    </div>
+
+    <div class="row">
+        <div th:each="appointment : ${appointments}" class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${appointment.doctor.fullName}"></h5>
+                    <h6 class="card-subtitle mb-2 text-muted" th:text="${appointment.doctor.clinic.name}"></h6>
+                    <p class="card-text">
+                        <strong>Tarih:</strong>
+                        <span th:text="${#temporals.format(appointment.appointmentDateTime, 'dd/MM/yyyy HH:mm')}"></span>
+                    </p>
+                    <a th:href="@{/appointments/book/{id}(id=${appointment.id})}" class="btn btn-primary">Randevu Al</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="/appointments/search" class="btn btn-secondary">Yeni Arama Yap</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

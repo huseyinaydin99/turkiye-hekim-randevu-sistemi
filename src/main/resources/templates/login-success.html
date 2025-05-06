@@ -237,8 +237,10 @@
 <!-- Content Section -->
 <div layout:fragment="content">
     <div class="d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 150px);">
+        <!--
         <div class="form-container mt-4">
             <h2 class="text-center mb-4">Doktor Randevusu Al</h2>
+
             <form class="needs-validation" novalidate>
                 <div class="mb-3">
                     <label for="appointmentDateTime" class="form-label">Randevu Tarihi ve Saati</label>
@@ -279,13 +281,85 @@
 
                 <button type="submit" class="btn btn-primary w-100">Randevuyu Kaydet</button>
             </form>
+
+        </div>
+        -->
+        <br />
+        <div class="form-container mt-4">
+            <form id="appointmentSearchForm" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label for="city" class="form-label">İl</label>
+                    <select class="form-select" id="city" required>
+                        <option selected disabled value="">Seçiniz</option>
+                        <!-- İller dinamik olarak yüklenecek -->
+                    </select>
+                    <div class="invalid-feedback">Lütfen bir il seçin!</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="district" class="form-label">İlçe</label>
+                    <select class="form-select" id="district" required disabled>
+                        <option selected disabled value="">Önce il seçiniz</option>
+                    </select>
+                    <div class="invalid-feedback">Lütfen bir ilçe seçin!</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="hospital" class="form-label">Hastane</label>
+                    <select class="form-select" id="hospital" required disabled>
+                        <option selected disabled value="">Önce ilçe seçiniz</option>
+                    </select>
+                    <div class="invalid-feedback">Lütfen bir hastane seçin!</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="clinic" class="form-label">Klinik</label>
+                    <select class="form-select" id="clinic" required disabled>
+                        <option selected disabled value="">Önce hastane seçiniz</option>
+                    </select>
+                    <div class="invalid-feedback">Lütfen bir klinik seçin!</div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="doctor" class="form-label">Doktor</label>
+                    <select class="form-select" id="doctor" required disabled>
+                        <option selected disabled value="">Önce klinik seçiniz</option>
+                    </select>
+                    <div class="invalid-feedback">Lütfen bir doktor seçin!</div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="btn btn-primary">Randevuları Ara</button>
+                    <div class="loader" id="loader"></div>
+                </div>
+            </form>
         </div>
     </div>
+    <!-- 1. jQuery ile fallback test -->
+<!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--    <script>-->
+<!--        $(document).ready(function() {-->
+<!--            console.log("jQuery ready çalıştı");-->
+<!--        });-->
+<!--    </script>-->
+
+    <!-- 2. Manuel init test butonu -->
+<!--    <button onclick="initApp()">Manual Init</button>-->
+<!--    <script>-->
+<!--        function initApp() {-->
+<!--            console.log("Manual init çalıştı");-->
+<!--            new AppointmentSearch();-->
+<!--        }-->
+<!--    </script>-->
+
+    <!-- 3. JS dosyasını en sona ekledim -->
+    <script th:src="@{/js/appointment-search.js}"></script>
 </div>
 
-<!-- Custom Scripts (Opsiyonel) -->
+<!-- Custom Scripts (Opsiyonel)
 <div layout:fragment="custom-scripts">
-    <!-- Sayfaya özel scriptler -->
+
 </div>
+-->
 </body>
 </html>

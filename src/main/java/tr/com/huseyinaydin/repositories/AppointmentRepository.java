@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import tr.com.huseyinaydin.entities.Appointment;
+import tr.com.huseyinaydin.entities.Doctor;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,4 +25,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     Appointment findByIdWithOptimisticLock(Long id);
 
     List<Appointment> findByAppointmentDateTime(LocalDateTime appointmentDateTime);
+
+    List<Appointment> findByDoctor(Doctor doctor);
+
+    List<Appointment> findByDoctorAndAppointmentDateTimeBetween(Doctor doctor, LocalDateTime start, LocalDateTime end);
 }
