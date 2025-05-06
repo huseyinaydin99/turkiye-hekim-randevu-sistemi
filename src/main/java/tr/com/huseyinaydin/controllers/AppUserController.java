@@ -2,15 +2,19 @@ package tr.com.huseyinaydin.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import tr.com.huseyinaydin.dtos.appointments.AppointmentSearchForm;
 import tr.com.huseyinaydin.dtos.login.LoginRequest;
 import tr.com.huseyinaydin.dtos.register.RegisterResponse;
 import tr.com.huseyinaydin.dtos.register.RegisterRequest;
 import tr.com.huseyinaydin.services.AppUserService;
+import tr.com.huseyinaydin.session.UserSession;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -19,13 +23,12 @@ import java.util.HashMap;
 
 @Controller
 @RequestMapping
+@RequiredArgsConstructor
 public class AppUserController {
 
     private final AppUserService appUserService;
-
-    public AppUserController(AppUserService appUserService) {
-        this.appUserService = appUserService;
-    }
+    private UserSession userSession;
+    private final ModelMapper modelMapper;
 
     // Kayıt sayfasını döndürme
     @GetMapping("/register")
@@ -48,12 +51,12 @@ public class AppUserController {
         return "redirect:/login";
     }
 
-
     // Giriş sayfasını döndürme (Custom Login)
-    @GetMapping("/ulogin")
-    public String showLoginPage(Model model) {
-        model.addAttribute("loginRequest", new LoginRequest());
-        return "ulogin"; // Custom login page/özel giriş sayfası tasarımı Thymeleaf template / şablonu
+    @GetMapping("/clogin")
+    public ModelAndView showLoginPage(Model model) {
+        ModelAndView page = new ModelAndView("ulogin");
+        page.addObject("loginRequest", new LoginRequest());
+        return page; // Custom login page/özel giriş sayfası tasarımı Thymeleaf template / şablonu
     }
 
     // Giriş işlemi
@@ -71,11 +74,13 @@ public class AppUserController {
             return errorView;
         }
 
-        var user = appUserService.login(loginRequest);
+        userSession = modelMapper.map(appUserService.login(loginRequest), UserSession.class);
+
         ModelAndView modelAndView = new ModelAndView("login-success");
 
-        if(user != null){
-            modelAndView.addObject("nameSurname", user.getFullName());
+        if(userSession != null){
+            modelAndView.addObject("searchForm", new AppointmentSearchForm()); // form nesnesini ekliyoruz
+            modelAndView.addObject("nameSurname", userSession.getFullName());
             return modelAndView;
         }
         else {

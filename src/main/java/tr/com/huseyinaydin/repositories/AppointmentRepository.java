@@ -4,6 +4,8 @@ import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import tr.com.huseyinaydin.dtos.appointments.AppointmentSearchForm;
 import tr.com.huseyinaydin.entities.Appointment;
 import tr.com.huseyinaydin.entities.Doctor;
 
@@ -29,4 +31,12 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     List<Appointment> findByDoctor(Doctor doctor);
 
     List<Appointment> findByDoctorAndAppointmentDateTimeBetween(Doctor doctor, LocalDateTime start, LocalDateTime end);
+
+    @Query("SELECT a FROM Appointment a " +
+            "WHERE a.doctor.clinic.city = :#{#searchForm.city} " +
+            "AND a.doctor.clinic.district = :#{#searchForm.district} " +
+            "AND a.hospital = :#{#searchForm.hospital} " +
+            "AND a.clinic = :#{#searchForm.clinic} " +
+            "AND a.doctor.fullName LIKE %:#{#searchForm.doctor}%")
+    List<Appointment> findAppointmentsByCriteria(@Param("searchForm") AppointmentSearchForm searchForm);
 }

@@ -44,7 +44,7 @@ public class AppUserServiceImpl implements AppUserService {
                 .email(dto.getEmail())
                 .nationalId(dto.getNationalId())
                 .password(passwordEncoder.encode(dto.getPassword()))
-                .role("ROLE_USER")
+                .role(dto.getRole())
                 .build();
 
         return modelMapper.map(userRepository.save(user), RegisterResponse.class);
@@ -59,9 +59,10 @@ public class AppUserServiceImpl implements AppUserService {
         // AuthenticationManager ile kimlik doğrulama yapılır
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         // 🔥 Bu satır olmazsa isUserLoggedIn() daima false olur
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         // Eğer doğrulama başarılıysa, başarılı yanıt döndürülür (Örneğin bir JWT token verilebilir)
         if (authentication.isAuthenticated()) {
+            SecurityContextHolder.getContext().setAuthentication(authentication);
             AppUser user = userRepository.findByEmail(request.getEmail())
                     .orElseThrow(() -> new IllegalArgumentException("Bu e-posta ile kayıtlı kullanıcı bulunamadı!"));
 

@@ -8,6 +8,8 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,20 +23,33 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                //.csrf(AbstractHttpConfigurer::disable) // CSRF korumasını devre dışı bırak (gerekiyorsa) asla önermem!
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/register", "/ulogin", "/login-success?nameSurname=*",  "/clogin", "/images/**", "/css/**", "/js/**", "/api/v1/appointments/search/**").permitAll()
-                        //.requestMatchers(HttpMethod.GET, "/api/v1/appointments/search/**").permitAll()
-                        //.requestMatchers(HttpMethod.POST, "/api/v1/appointments/search/**").permitAll()
+                        .requestMatchers("/register", "/ulogin/**", "/login-success?nameSurname=*",  "/clogin/**", "/images/**", "/css/**", "/js/**", "/api/v1/appointments/search/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/appointments/**").hasAuthority("ROLE_USER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/ulogin")
-                        .defaultSuccessUrl("/dashboard", true)
+                        .loginPage("/clogin")
+                        .usernameParameter("email") // input name="email"
+                        .passwordParameter("password") // input name="password"
+                        .defaultSuccessUrl("/appointments/search", true)
+                        .failureUrl("/clogin?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/ulogin?logout")
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/clogin?logout")
+                        .invalidateHttpSession(true)
+                        //.deleteCookies("JSESSIONID")
                         .permitAll()
+                )
+                .sessionManagement(session -> session
+                        //.sessionCreationPolicy(SessionCreationPolicy.STATELESS)// Oturum yalnızca gerektiğinde oluşturulur
+                        .sessionFixation().migrateSession()
+                        .maximumSessions(1) // Kullanıcı başına maksimum oturum sayısı
+                        .maxSessionsPreventsLogin(false) // Yeni oturum açıldığında eski oturumu sonlandır
+                        .expiredUrl("/login?expired")
                 );
 
         return http.build();

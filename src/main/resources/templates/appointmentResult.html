@@ -16,7 +16,7 @@
 
     <div class="row">
         <div th:each="appointment : ${appointments}" class="col-md-4 mb-4">
-            <div class="card">
+            <!--<div class="card">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${appointment.doctor.fullName}"></h5>
                     <h6 class="card-subtitle mb-2 text-muted" th:text="${appointment.doctor.clinic.name}"></h6>
@@ -27,6 +27,7 @@
                     <a th:href="@{/appointments/book/{id}(id=${appointment.id})}" class="btn btn-primary">Randevu Al</a>
                 </div>
             </div>
+            -->
         </div>
     </div>
 

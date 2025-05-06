@@ -286,11 +286,18 @@
         -->
         <br />
         <div class="form-container mt-4">
-            <form id="appointmentSearchForm" class="needs-validation" novalidate>
+            <h4 class="text-center mb-4">Doktor Randevusu Al</h4>
+
+            <form id="appointmentSearchForm" class="needs-validation" method="POST" th:action="@{/appointments/search}" th:object="${searchForm}">
                 <div class="mb-3">
                     <label for="city" class="form-label">İl</label>
-                    <select class="form-select" id="city" required>
-                        <option selected disabled value="">Seçiniz</option>
+                    <select class="form-select" id="city" th:field="*{city}"
+                            th:classappend="${#fields.hasErrors('city')} ? 'is-invalid' : ''"
+                            required>
+                        <option selected value="">Seçiniz</option>
+                        <option th:each="city : ${cities}"
+                                th:value="${city.id}"
+                                th:text="${city.name}"></option>
                         <!-- İller dinamik olarak yüklenecek -->
                     </select>
                     <div class="invalid-feedback">Lütfen bir il seçin!</div>
@@ -298,32 +305,40 @@
 
                 <div class="mb-3">
                     <label for="district" class="form-label">İlçe</label>
-                    <select class="form-select" id="district" required disabled>
-                        <option selected disabled value="">Önce il seçiniz</option>
+                    <select class="form-select" id="district" th:field="*{district}"
+                            th:classappend="${#fields.hasErrors('district')} ? 'is-invalid' : ''"
+                            required>
+                        <option selected value="">Önce il seçiniz</option>
                     </select>
                     <div class="invalid-feedback">Lütfen bir ilçe seçin!</div>
                 </div>
 
                 <div class="mb-3">
                     <label for="hospital" class="form-label">Hastane</label>
-                    <select class="form-select" id="hospital" required disabled>
-                        <option selected disabled value="">Önce ilçe seçiniz</option>
+                    <select class="form-select" id="hospital" th:field="*{hospital}"
+                            th:classappend="${#fields.hasErrors('hospital')} ? 'is-invalid' : ''"
+                            required>
+                        <option selected value="">Önce ilçe seçiniz</option>
                     </select>
                     <div class="invalid-feedback">Lütfen bir hastane seçin!</div>
                 </div>
 
                 <div class="mb-3">
                     <label for="clinic" class="form-label">Klinik</label>
-                    <select class="form-select" id="clinic" required disabled>
-                        <option selected disabled value="">Önce hastane seçiniz</option>
+                    <select class="form-select" id="clinic" th:field="*{clinic}"
+                            th:classappend="${#fields.hasErrors('clinic')} ? 'is-invalid' : ''"
+                            required>
+                        <option selected value="">Önce hastane seçiniz</option>
                     </select>
                     <div class="invalid-feedback">Lütfen bir klinik seçin!</div>
                 </div>
 
                 <div class="mb-4">
                     <label for="doctor" class="form-label">Doktor</label>
-                    <select class="form-select" id="doctor" required disabled>
-                        <option selected disabled value="">Önce klinik seçiniz</option>
+                    <select class="form-select" id="doctor" th:field="*{doctor}"
+                            th:classappend="${#fields.hasErrors('doctor')} ? 'is-invalid' : ''"
+                            required>
+                        <option selected value="">Önce klinik seçiniz</option>
                     </select>
                     <div class="invalid-feedback">Lütfen bir doktor seçin!</div>
                 </div>

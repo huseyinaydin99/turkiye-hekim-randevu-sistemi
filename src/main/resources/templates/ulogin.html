@@ -170,7 +170,9 @@
     <form th:action="@{/clogin}" th:object="${loginRequest}" method="post">
       <div class="mb-4">
         <label for="email" class="form-label">E-posta:</label>
-        <input type="email" class="form-control" id="email" name="email" required>
+        <input type="email" class="form-control" id="email" name="email" th:field="*{email}"
+               th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
+               required>
         <div th:if="${#fields.hasErrors('email')}" class="error-message">
           <span th:errors="*{email}"></span>
         </div>
