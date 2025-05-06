@@ -9,161 +9,239 @@
         html, body {
             height: 100%;
             margin: 0;
-            overflow: hidden;
+            overflow: auto; /* Değişiklik: overflow hidden yerine auto */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         body {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-                        url('https://images.unsplash.com/photo-1518655048521-f130df041f66?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background: linear-gradient(rgba(15, 23, 43, 0.7), rgba(15, 23, 43, 0.7)),
+                        url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             display: flex;
             align-items: center;
+            animation: fadeIn 1.5s ease-in-out;
+            padding: 40px 0; /* Yeni: Üstten ve alttan boşluk */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         .registration-container {
-            max-width: 500px;
+            max-width: 450px; /* Değişiklik: 500px'den 450px'e küçültüldü */
             width: 100%;
-            margin: 0 auto;
-            padding: 40px;
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin: 20px auto; /* Yeni: Üstten ve alttan boşluk */
+            padding: 30px; /* Değişiklik: 40px'den 30px'e küçültüldü */
+            background-color: rgba(255, 255, 255, 0.98);
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transform: translateY(0);
+            transition: all 0.4s ease;
+        }
+        .registration-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
         }
         .form-title {
             text-align: center;
-            margin-bottom: 35px;
+            margin-bottom: 25px; /* Değişiklik: 35px'den 25px'e küçültüldü */
             color: #2c3e50;
             font-weight: 800;
-            font-size: 2.2rem;
+            font-size: 2rem; /* Değişiklik: 2.2rem'den 2rem'e küçültüldü */
             letter-spacing: -0.5px;
+            position: relative;
+        }
+        .form-title:after {
+            content: '';
+            display: block;
+            width: 70px; /* Değişiklik: 80px'den 70px'e küçültüldü */
+            height: 4px;
+            background: linear-gradient(to right, #4e73df, #2e59d9);
+            margin: 12px auto 0; /* Değişiklik: 15px'den 12px'e küçültüldü */
+            border-radius: 2px;
         }
         .form-label {
             font-weight: 600;
             color: #495057;
-            margin-bottom: 8px;
+            margin-bottom: 6px; /* Değişiklik: 8px'den 6px'e küçültüldü */
+            display: block;
+            font-size: 0.95rem; /* Yeni: Yazı boyutu küçültüldü */
         }
         .btn-register {
             width: 100%;
-            padding: 14px;
+            padding: 12px; /* Değişiklik: 14px'den 12px'e küçültüldü */
             font-weight: 700;
-            margin-top: 20px;
-            background-color: #4e73df;
+            margin-top: 20px; /* Değişiklik: 25px'den 20px'e küçültüldü */
+            background: linear-gradient(to right, #4e73df, #2e59d9);
             border: none;
             border-radius: 10px;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-size: 1.05rem;
+            font-size: 1rem; /* Değişiklik: 1.05rem'den 1rem'e küçültüldü */
+            box-shadow: 0 4px 15px rgba(78, 115, 223, 0.3);
         }
         .btn-register:hover {
-            background-color: #2e59d9;
             transform: translateY(-3px);
             box-shadow: 0 7px 20px rgba(78, 115, 223, 0.4);
         }
         .login-link {
             text-align: center;
-            margin-top: 25px;
+            margin-top: 20px; /* Değişiklik: 25px'den 20px'e küçültüldü */
             color: #495057;
-            font-size: 0.95rem;
+            font-size: 0.9rem; /* Değişiklik: 0.95rem'den 0.9rem'e küçültüldü */
         }
         .login-link a {
             color: #4e73df;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s;
+            position: relative;
         }
-        .login-link a:hover {
-            color: #2e59d9;
-            text-decoration: underline;
+        .login-link a:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #4e73df;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        .login-link a:hover:after {
+            transform: scaleX(1);
         }
         .form-control {
-            padding: 12px 16px;
+            padding: 10px 14px; /* Değişiklik: 12px 16px'den 10px 14px'e küçültüldü */
             border-radius: 10px;
-            border: 1px solid #ced4da;
+            border: 1px solid #e0e0e0;
             transition: all 0.3s;
-            font-size: 1rem;
+            font-size: 0.95rem; /* Değişiklik: 1rem'den 0.95rem'e küçültüldü */
+            background-color: #f9f9f9;
         }
         .form-control:focus {
             border-color: #86b7fe;
-            box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.25);
+            box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.15);
+            background-color: #fff;
+        }
+        .error-message {
+            margin-top: 15px; /* Değişiklik: 20px'den 15px'e küçültüldü */
+            border-radius: 10px;
+            padding: 12px; /* Değişiklik: 15px'den 12px'e küçültüldü */
+            background-color: rgba(220, 53, 69, 0.1);
+            border-left: 4px solid #dc3545;
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
         }
         .input-group-text {
             background-color: #f8f9fa;
+            border-color: #e0e0e0;
+            padding: 0 12px; /* Değişiklik: Padding ayarlandı */
         }
         .password-toggle {
             cursor: pointer;
             transition: all 0.3s;
+            color: #6c757d;
+            font-size: 1rem; /* Yeni: Boyut ayarlandı */
         }
         .password-toggle:hover {
             color: #4e73df;
         }
-        /* Özel Hata Mesajı Stilleri */
-        .error-message {
-            color: #dc3545;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
+        .invalid-feedback {
             display: block;
+            width: 100%;
+            margin-top: 0.25rem;
+            font-size: 0.8em; /* Değişiklik: 0.875em'den 0.8em'e küçültüldü */
+            color: #dc3545;
+            animation: fadeInUp 0.3s;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         .is-invalid {
-            border-color: #dc3545 !important;
+            border-color: #dc3545;
+            padding-right: calc(1.5em + 0.75rem);
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
             background-repeat: no-repeat;
             background-position: right calc(0.375em + 0.1875rem) center;
             background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
         }
-        .is-invalid:focus {
-            border-color: #dc3545;
-            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+        .hospital-icon {
+            display: block;
+            text-align: center;
+            margin-bottom: 15px; /* Değişiklik: 20px'den 15px'e küçültüldü */
+            color: #4e73df;
+            font-size: 2.2rem; /* Değişiklik: 2.5rem'den 2.2rem'e küçültüldü */
+        }
+        .input-group {
+            transition: all 0.3s;
+        }
+        .input-group:focus-within {
+            transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="registration-container">
+        <div class="hospital-icon">
+            <i class="bi bi-hospital"></i>
+        </div>
         <h2 class="form-title">Kayıt Ol</h2>
 
         <form th:action="@{/register}" th:object="${registerRequest}" method="post">
             <!-- Ad Soyad -->
-            <div class="mb-4">
+            <div class="mb-3"> <!-- Değişiklik: mb-4'ten mb-3'e küçültüldü -->
                 <label for="fullName" class="form-label">Ad Soyad:</label>
                 <input type="text" class="form-control" id="fullName"
                        th:field="*{fullName}"
                        th:classappend="${#fields.hasErrors('fullName')} ? 'is-invalid' : ''"
                        required>
-                <div th:if="${#fields.hasErrors('fullName')}" class="error-message">
+                <div th:if="${#fields.hasErrors('fullName')}" class="invalid-feedback">
                     <span th:errors="*{fullName}"></span>
                 </div>
             </div>
 
             <!-- E-posta -->
-            <div class="mb-4">
+            <div class="mb-3"> <!-- Değişiklik: mb-4'ten mb-3'e küçültüldü -->
                 <label for="email" class="form-label">E-posta:</label>
                 <input type="email" class="form-control" id="email"
                        th:field="*{email}"
                        th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
                        required>
-                <div th:if="${#fields.hasErrors('email')}" class="error-message">
+                <div th:if="${#fields.hasErrors('email')}" class="invalid-feedback">
                     <span th:errors="*{email}"></span>
                 </div>
             </div>
 
             <!-- TC Kimlik No -->
-            <div class="mb-4">
+            <div class="mb-3"> <!-- Değişiklik: mb-4'ten mb-3'e küçültüldü -->
                 <label for="nationalId" class="form-label">TC Kimlik No:</label>
                 <input type="text" class="form-control" id="nationalId"
                        th:field="*{nationalId}"
                        th:classappend="${#fields.hasErrors('nationalId')} ? 'is-invalid' : ''"
                        required>
-                <div th:if="${#fields.hasErrors('nationalId')}" class="error-message">
+                <div th:if="${#fields.hasErrors('nationalId')}" class="invalid-feedback">
                     <span th:errors="*{nationalId}"></span>
                 </div>
             </div>
 
             <!-- Şifre -->
-            <div class="mb-4">
+            <div class="mb-3"> <!-- Değişiklik: mb-4'ten mb-3'e küçültüldü -->
                 <label for="password" class="form-label">Şifre:</label>
                 <div class="input-group">
                     <input type="password" class="form-control" id="password"
@@ -174,7 +252,7 @@
                         <i class="bi bi-eye"></i>
                     </span>
                 </div>
-                <div th:if="${#fields.hasErrors('password')}" class="error-message">
+                <div th:if="${#fields.hasErrors('password')}" class="invalid-feedback">
                     <span th:errors="*{password}"></span>
                 </div>
             </div>
@@ -203,6 +281,19 @@
             icon.classList.add("bi-eye");
         }
     }
+
+    // Sayfa yüklendiğinde hafif bir animasyon ekleyelim
+    document.addEventListener('DOMContentLoaded', function() {
+        const regContainer = document.querySelector('.registration-container');
+        regContainer.style.opacity = '0';
+        regContainer.style.transform = 'translateY(20px)';
+
+        setTimeout(() => {
+            regContainer.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            regContainer.style.opacity = '1';
+            regContainer.style.transform = 'translateY(0)';
+        }, 100);
+    });
 </script>
 </body>
 </html>
