@@ -46,4 +46,10 @@ public class Doctor {
 
     @OneToMany(mappedBy = "doctor")
     private List<Appointment> appointments;
+
+    @Version
+    private Long version; //Optimistic Lock için!
+
+    public Doctor(Long doctorId) {
+    }
 }

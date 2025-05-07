@@ -9,12 +9,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import tr.com.huseyinaydin.dtos.AppUserDto;
 import tr.com.huseyinaydin.dtos.login.AllFieldLoginResponse;
 import tr.com.huseyinaydin.dtos.login.LoginRequest;
 import tr.com.huseyinaydin.dtos.register.RegisterRequest;
 import tr.com.huseyinaydin.dtos.register.RegisterResponse;
 import tr.com.huseyinaydin.entities.AppUser;
 import tr.com.huseyinaydin.exceptions.InvalidLoginException;
+import tr.com.huseyinaydin.exceptions.ResourceNotFoundException;
 import tr.com.huseyinaydin.repositories.AppUserRepository;
 import tr.com.huseyinaydin.services.AppUserService;
 
@@ -31,6 +33,22 @@ public class AppUserServiceImpl implements AppUserService {
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
         this.authenticationManager = authenticationManager;
+    }
+
+    @Override
+    public AppUserDto getUserById(Long id) {
+        AppUser user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Kullanıcı bulunamadı. ID: " + id));
+
+        return modelMapper.map(user, AppUserDto.class);
+    }
+
+    @Override
+    public AppUserDto getUserByEmail(String email) {
+        AppUser user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Kullanıcı bulunamadı. Email: " + email));
+
+        return modelMapper.map(user, AppUserDto.class);
     }
 
     @Override

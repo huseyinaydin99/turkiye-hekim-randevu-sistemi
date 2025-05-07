@@ -11,15 +11,12 @@ import java.util.List;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class DoctorDto {
     private Long id;
     private String fullName;
-    private String title;
-    /*private ClinicDto clinic;
-    private HospitalDto hospital;
-    private DistrictDto district;
-    private CityDto city;
-    private List<AppointmentDto> appointments;*/
+    private String specialty;
+    private Long clinicId;
+    private Long hospitalId;
 }

@@ -1,39 +1,439 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Randevu Sonuçları</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --accent-color: #6c63ff;
+            --light-bg: rgba(255, 255, 255, 0.92);
+            --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            --border-radius: 12px;
+        }
+
+        body {
+            background: linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)),
+                        url('/images/backgrounds/medical-office-bg.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            color: #4a4a4a;
+            line-height: 1.6;
+        }
+
+        .header-container {
+            background: var(--light-bg);
+            backdrop-filter: blur(12px);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            padding: 2rem 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+            min-height: 120px;
+        }
+
+        .header-logo {
+            position: absolute;
+            right: 2.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 200px; /* Boyutu büyüttüm */
+            width: auto;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .header-logo:hover {
+            opacity: 1;
+            transform: translateY(-50%) scale(1.05);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+        }
+
+        .section-title {
+            position: relative;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            font-weight: 700;
+            font-size: 1.8rem;
+            letter-spacing: -0.5px;
+            padding-right: 100px; /* Logo için daha fazla alan */
+        }
+
+        .section-title:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 50px;
+            height: 3px;
+            background: var(--primary-gradient);
+            border-radius: 3px;
+        }
+
+        .section-subtitle {
+            color: #6c757d;
+            font-weight: 400;
+            font-size: 1rem;
+            max-width: 700px;
+            padding-right: 60px;
+        }
+
+        .card-slot {
+            background: var(--light-bg);
+            backdrop-filter: blur(8px);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: none;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .card-slot:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-header-custom {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 1.25rem;
+            border-bottom: none;
+        }
+
+        .doctor-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: white;
+            line-height: 1.4;
+        }
+
+        .specialty-badge {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-weight: 500;
+            padding: 0.3rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+            margin-top: 0.3rem;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+            flex-grow: 1;
+        }
+
+        .section-label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .section-label i {
+            margin-right: 0.6rem;
+            color: var(--accent-color);
+            font-size: 1rem;
+        }
+
+        .time-slot {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            padding: 0.5rem 0.9rem;
+            margin: 0.25rem;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+            color: #4a4a4a;
+        }
+
+        .time-slot:hover {
+            background-color: rgba(108, 99, 255, 0.1);
+            border-color: rgba(108, 99, 255, 0.2);
+        }
+
+        .time-slot.selected {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            color: white;
+            box-shadow: 0 3px 8px rgba(108, 99, 255, 0.2);
+        }
+
+        .location-info-item {
+            margin-bottom: 0.6rem;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .location-info-item i {
+            color: var(--accent-color);
+            margin-right: 0.7rem;
+            margin-top: 0.15rem;
+            font-size: 0.9rem;
+        }
+
+        .location-info-text {
+            flex: 1;
+        }
+
+        .divider {
+            margin: 1.25rem 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            border: none;
+            padding: 0.6rem 1.25rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(108, 99, 255, 0.2);
+            font-size: 0.9rem;
+        }
+
+        .btn-primary:hover {
+            background: #5a52e0;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-success {
+            background: #28a745;
+            box-shadow: 0 3px 10px rgba(40, 167, 69, 0.2);
+        }
+
+        .no-results-container {
+            background: var(--light-bg);
+            backdrop-filter: blur(8px);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            max-width: 500px;
+            margin: 2.5rem auto;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .no-results-icon {
+            font-size: 3.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .no-results-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            font-size: 1.5rem;
+        }
+
+        .no-results-text {
+            color: #6c757d;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .card-footer-custom {
+            background: transparent;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1rem 1.25rem;
+        }
+
+        @media (max-width: 991.98px) {
+            .header-logo {
+                height: 40px;
+                right: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+                padding-right: 50px;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .header-container {
+                padding: 1.5rem;
+                text-align: center;
+            }
+
+            .header-logo {
+                position: static;
+                transform: none;
+                margin: 1rem auto 0;
+                display: block;
+                height: 45px;
+            }
+
+            .section-title, .section-subtitle {
+                padding-right: 0;
+                text-align: center;
+            }
+
+            .section-title:after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .no-results-container {
+                padding: 2rem;
+                margin: 2rem auto;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .section-title {
+                font-size: 1.4rem;
+            }
+
+            .card-header-custom {
+                padding: 1rem;
+            }
+
+            .doctor-name {
+                font-size: 1rem;
+            }
+
+            .card-body {
+                padding: 1rem;
+            }
+
+            .no-results-container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="container mt-5">
-    <h2 class="mb-4">Uygun Randevular</h2>
-
-    <div th:if="${#lists.isEmpty(appointments)}" class="alert alert-info">
-        Seçtiğiniz kriterlere uygun randevu bulunamadı.
-    </div>
-
-    <div class="row">
-        <div th:each="appointment : ${appointments}" class="col-md-4 mb-4">
-            <!--<div class="card">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${appointment.doctor.fullName}"></h5>
-                    <h6 class="card-subtitle mb-2 text-muted" th:text="${appointment.doctor.clinic.name}"></h6>
-                    <p class="card-text">
-                        <strong>Tarih:</strong>
-                        <span th:text="${#temporals.format(appointment.appointmentDateTime, 'dd/MM/yyyy HH:mm')}"></span>
-                    </p>
-                    <a th:href="@{/appointments/book/{id}(id=${appointment.id})}" class="btn btn-primary">Randevu Al</a>
-                </div>
+<div class="container py-4 py-lg-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="header-container">
+                <img src="/images/hospital-logo3.jpg" alt="Medical Logo" class="header-logo">
+                <h1 class="section-title">Uygun Randevu Saatleri</h1>
+                <p class="section-subtitle">Aşağıda seçtiğiniz bilgilere göre doktorunuzun müsait olduğu zaman aralıkları ile alınabilecek randevular listelenmiştir. Randevu almak için aşağıdan kendinize uygun bir zaman seçiniz.</p>
             </div>
-            -->
         </div>
     </div>
 
-    <a href="/appointments/search" class="btn btn-secondary">Yeni Arama Yap</a>
+    <div th:if="${slots != null and !slots.isEmpty()}">
+        <div class="row g-4">
+            <div th:each="slot : ${slots}" class="col-12 col-sm-6 col-lg-4">
+                <div class="card card-slot">
+                    <div class="card-header card-header-custom">
+                        <div class="d-flex flex-column">
+                            <h3 class="doctor-name mb-1" th:text="${slot.doctorName}"></h3>
+                            <span class="specialty-badge" th:text="${slot.specialty}"></span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <h6 class="section-label">
+                                <i class="far fa-clock"></i> Müsait Zaman Aralıkları
+                            </h6>
+                            <div class="time-slots-container">
+                                <span class="time-slot">
+                                    <span th:text="${#temporals.format(slot.startTime, 'HH:mm')} + ' - ' + ${#temporals.format(slot.endTime, 'HH:mm')}"></span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="location-info">
+                            <h6 class="section-label">
+                                <i class="fas fa-map-marker-alt"></i> Lokasyon Bilgileri
+                            </h6>
+                            <div class="location-info-item">
+                                <i class="fas fa-hospital"></i>
+                                <div class="location-info-text">Hastane: <span th:text="${slot.hospitalId}"></span></div>
+                            </div>
+                            <div class="location-info-item">
+                                <i class="fas fa-clinic-medical"></i>
+                                <div class="location-info-text">Klinik: <span th:text="${slot.clinicId}"></span></div>
+                            </div>
+                            <div class="location-info-item">
+                                <i class="fas fa-city"></i>
+                                <div class="location-info-text">Konum: <span th:text="${slot.cityId} + ' / ' + ${slot.districtId}"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer card-footer-custom">
+                        <button class="btn btn-primary w-100" onclick="selectTimeSlot(this)">
+                            <i class="far fa-calendar-check me-2"></i> Randevu Al
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${slots == null or slots.isEmpty()}">
+        <div class="no-results-container">
+            <i class="far fa-calendar-times no-results-icon"></i>
+            <h3 class="no-results-title" th:text="${message} ?: 'Müsait randevu bulunamadı'"></h3>
+            <p class="no-results-text">Lütfen farklı bir doktor veya tarih seçerek tekrar deneyiniz.</p>
+            <a href="/appointment" class="btn btn-primary">
+                <i class="fas fa-arrow-left me-2"></i> Randevu Arama Sayfasına Dön
+            </a>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function selectTimeSlot(button) {
+        const card = button.closest('.card-slot');
+        const doctorName = card.querySelector('.doctor-name').textContent;
+        const timeSlot = card.querySelector('.time-slot').textContent;
+
+        // Seçilen randevu bilgilerini göster
+        alert(`Randevu talebi oluşturuldu:\n\nDoktor: ${doctorName}\nSaat: ${timeSlot}`);
+
+        // Seçili görünüm ekle
+        card.querySelector('.time-slot').classList.add('selected');
+
+        // Butonu devre dışı bırak
+        button.disabled = true;
+        button.innerHTML = '<i class="far fa-check-circle me-2"></i> Randevu Talebi Gönderildi';
+        button.classList.remove('btn-primary');
+        button.classList.add('btn-success');
+        button.style.boxShadow = '0 3px 10px rgba(40, 167, 69, 0.2)';
+    }
+</script>
 </body>
 </html>
