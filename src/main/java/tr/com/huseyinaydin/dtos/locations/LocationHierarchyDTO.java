@@ -10,10 +10,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LocationHierarchyDto {
-    private List<CityDto> cities;
-    private List<DistrictDto> districts;
-    private List<HospitalDto> hospitals;
-    private List<ClinicDto> clinics;
-    private List<DoctorDto> doctors;
+public class LocationHierarchyDTO {
+    private List<CityDTO> cities;
+    private List<DistrictDTO> districts;
+    private List<HospitalDTO> hospitals;
+    private List<ClinicDTO> clinics;
+    private List<DoctorDTO> doctors;
 }

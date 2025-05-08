@@ -2,12 +2,11 @@ package tr.com.huseyinaydin.services.impls;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tr.com.huseyinaydin.dtos.AvailableAppointmentDto;
+import tr.com.huseyinaydin.dtos.AvailableAppointmentDTO;
 import tr.com.huseyinaydin.dtos.appointments.*;
 import tr.com.huseyinaydin.entities.*;
 import tr.com.huseyinaydin.exceptions.AppointmentNotAvailableException;
@@ -16,11 +15,9 @@ import tr.com.huseyinaydin.exceptions.ResourceNotFoundException;
 import tr.com.huseyinaydin.repositories.*;
 import tr.com.huseyinaydin.services.AppointmentSearchService;
 
-import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,15 +45,15 @@ public class AppointmentSearchServiceImpl implements AppointmentSearchService {
     }
 
     @Override
-    public List<AvailableAppointmentDto> findAvailableAppointments(Long cityId, Long districtId,
-                                                                Long hospitalId, Long clinicId, Long doctorId, LocalDateTime startDate) {
+    public List<AvailableAppointmentDTO> findAvailableAppointments(Long cityId, Long districtId,
+                                                                   Long hospitalId, Long clinicId, Long doctorId, LocalDateTime startDate) {
 
 
 
         List<AvailableAppointment> availableAppointments = availableAppointmentRepository.searchByCriteria(cityId, districtId, hospitalId,
                 clinicId, doctorId);
         // DTO listesi oluşturuluyor
-        List<AvailableAppointmentDto> dtoList = availableAppointments.stream()
+        List<AvailableAppointmentDTO> dtoList = availableAppointments.stream()
                 .map(appointment -> {
                     // İlgili nesneleri alıyoruz
                     Clinic clinic = clinicRepository.findById(appointment.getClinic() != null ? appointment.getClinic().getId() : clinicId).get();
@@ -66,7 +63,7 @@ public class AppointmentSearchServiceImpl implements AppointmentSearchService {
                     Doctor doctor = doctorRepository.findById(appointment.getDoctor() != null ? appointment.getDoctor().getId() : doctorId).get();
 
                     // DTO'yu oluşturuyoruz
-                    return AvailableAppointmentDto.builder()
+                    return AvailableAppointmentDTO.builder()
                             .id(appointment.getId())
                             .appointmentDateTimeStart(appointment.getAppointmentDateTimeStart())
                             .appointmentDateTimeEnd(appointment.getAppointmentDateTimeEnd())

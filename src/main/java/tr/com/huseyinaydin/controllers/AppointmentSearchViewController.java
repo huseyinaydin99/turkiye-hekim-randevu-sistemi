@@ -10,12 +10,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import tr.com.huseyinaydin.dtos.AppointmentDto;
-import tr.com.huseyinaydin.dtos.AvailableAppointmentDto;
+import tr.com.huseyinaydin.dtos.AppointmentDTO;
+import tr.com.huseyinaydin.dtos.AvailableAppointmentDTO;
 import tr.com.huseyinaydin.dtos.appointments.*;
 import tr.com.huseyinaydin.dtos.login.LoginRequest;
 import tr.com.huseyinaydin.entities.Appointment;
-import tr.com.huseyinaydin.entities.AvailableAppointment;
 import tr.com.huseyinaydin.exceptions.ConflictException;
 import tr.com.huseyinaydin.security.AppUserDetails;
 import tr.com.huseyinaydin.services.*;
@@ -120,7 +119,7 @@ public class AppointmentSearchViewController {
         /*AppointmentSearchCriteria appointmentSearchCriteria =
                 new AppointmentSearchCriteria(cityId, distrcitId, hospitalId, clinicId, doctorId, startDate);*/
 
-        List<AvailableAppointmentDto> availableApoointments = appointmentSearchService.findAvailableAppointments(cityId, distrcitId, hospitalId, clinicId, doctorId, startDate);
+        List<AvailableAppointmentDTO> availableApoointments = appointmentSearchService.findAvailableAppointments(cityId, distrcitId, hospitalId, clinicId, doctorId, startDate);
         ModelAndView page = new ModelAndView("appointmentResult");
         page.addObject("slots", availableApoointments);
         page.addObject("formatter", formatter);
@@ -133,8 +132,8 @@ public class AppointmentSearchViewController {
         return page;
     }
 
-    private static List<AppointmentDto> generateRandomAppointments(int count) {
-        List<AppointmentDto> appointments = new ArrayList<>();
+    private static List<AppointmentDTO> generateRandomAppointments(int count) {
+        List<AppointmentDTO> appointments = new ArrayList<>();
         Random random = new Random();
         String[] notes = {
                 "Hastamın şeker seviyeleri yüksek",
@@ -154,7 +153,7 @@ public class AppointmentSearchViewController {
                     .plusMinutes(random.nextInt(12) * 5)
                     .truncatedTo(ChronoUnit.MINUTES);
 
-            AppointmentDto appointment = AppointmentDto.builder()
+            AppointmentDTO appointment = AppointmentDTO.builder()
                     .id((long) i)
                     .appointmentDateTime(randomDateTime)
                     .attended(random.nextBoolean())

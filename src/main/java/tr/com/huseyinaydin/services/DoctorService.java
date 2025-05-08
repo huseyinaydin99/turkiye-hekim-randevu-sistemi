@@ -1,11 +1,11 @@
 package tr.com.huseyinaydin.services;
 
-import tr.com.huseyinaydin.dtos.DoctorDto;
+import tr.com.huseyinaydin.dtos.DoctorDTO;
 
 import java.util.List;
 
 public interface DoctorService {
-    DoctorDto getDoctorById(Long id);
-    List<DoctorDto> searchDoctors(String query);
-    List<DoctorDto> getDoctorsByClinicAndHospital(Long clinicId, Long hospitalId);
+    DoctorDTO getDoctorById(Long id);
+    List<DoctorDTO> searchDoctors(String query);
+    List<DoctorDTO> getDoctorsByClinicAndHospital(Long clinicId, Long hospitalId);
 }

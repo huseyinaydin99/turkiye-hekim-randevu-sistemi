@@ -9,7 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import tr.com.huseyinaydin.dtos.AppUserDto;
+import tr.com.huseyinaydin.dtos.AppUserDTO;
 import tr.com.huseyinaydin.dtos.login.AllFieldLoginResponse;
 import tr.com.huseyinaydin.dtos.login.LoginRequest;
 import tr.com.huseyinaydin.dtos.register.RegisterRequest;
@@ -36,19 +36,19 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public AppUserDto getUserById(Long id) {
+    public AppUserDTO getUserById(Long id) {
         AppUser user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Kullanıcı bulunamadı. ID: " + id));
 
-        return modelMapper.map(user, AppUserDto.class);
+        return modelMapper.map(user, AppUserDTO.class);
     }
 
     @Override
-    public AppUserDto getUserByEmail(String email) {
+    public AppUserDTO getUserByEmail(String email) {
         AppUser user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Kullanıcı bulunamadı. Email: " + email));
 
-        return modelMapper.map(user, AppUserDto.class);
+        return modelMapper.map(user, AppUserDTO.class);
     }
 
     @Override

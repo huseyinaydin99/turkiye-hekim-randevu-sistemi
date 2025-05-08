@@ -1,11 +1,9 @@
 package tr.com.huseyinaydin.dtos;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tr.com.huseyinaydin.entities.*;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AppointmentDto {
+public class AppointmentDTO {
     private Long id;
     private LocalDateTime appointmentDateTime;
     private boolean attended;

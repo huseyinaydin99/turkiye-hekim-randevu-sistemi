@@ -1,6 +1,6 @@
 package tr.com.huseyinaydin.services;
 
-import tr.com.huseyinaydin.dtos.AvailableAppointmentDto;
+import tr.com.huseyinaydin.dtos.AvailableAppointmentDTO;
 import tr.com.huseyinaydin.dtos.appointments.*;
 import tr.com.huseyinaydin.entities.Appointment;
 import tr.com.huseyinaydin.entities.AvailableAppointment;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface AppointmentSearchService {
     List<AvailableAppointment> findAvailableAppointments(AppointmentSearchCriteria criteria);
-    List<AvailableAppointmentDto> findAvailableAppointments(Long cityId, Long districtId,
+    List<AvailableAppointmentDTO> findAvailableAppointments(Long cityId, Long districtId,
                                                             Long hospitalId, Long clinicId, Long doctorId, LocalDateTime startDate);
     Appointment createAppointmentOptimistic(AppointmentRequest request);
     List<Appointment> searchAppointments(AppointmentSearchForm searchForm);
