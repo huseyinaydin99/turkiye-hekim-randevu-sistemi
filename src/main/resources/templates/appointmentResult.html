@@ -9,332 +9,386 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --accent-color: #6c63ff;
-            --light-bg: rgba(255, 255, 255, 0.92);
-            --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-            --border-radius: 12px;
+          --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          --secondary-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+          --accent-color: #6c63ff;
+          --light-bg: rgba(255, 255, 255, 0.92);
+          --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+          --border-radius: 12px;
         }
 
         body {
-            background: linear-gradient(rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.0)),
-                        url('/images/backgrounds/medical-office-bg.jpg');
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-            min-height: 100vh;
-            font-family: 'Poppins', sans-serif;
-            color: #4a4a4a;
-            line-height: 1.6;
+          background: linear-gradient(rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.0)),
+            url('/images/backgrounds/medical-office-bg.jpg');
+          background-size: cover;
+          background-attachment: fixed;
+          background-position: center;
+          min-height: 100vh;
+          font-family: 'Poppins', sans-serif;
+          color: #4a4a4a;
+          line-height: 1.6;
         }
 
         .header-container {
-            background: var(--light-bg);
-            backdrop-filter: blur(12px);
-            border-radius: var(--border-radius);
-            box-shadow: var(--card-shadow);
-            padding: 2rem 2.5rem;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            position: relative;
-            overflow: hidden;
-            min-height: 120px;
+          background: var(--light-bg);
+          backdrop-filter: blur(12px);
+          border-radius: var(--border-radius);
+          box-shadow: var(--card-shadow);
+          padding: 2rem 2.5rem;
+          margin-bottom: 2rem;
+          border: 1px solid rgba(255, 255, 255, 0.4);
+          position: relative;
+          overflow: hidden;
+          min-height: 120px;
         }
 
         .header-logo {
-            position: absolute;
-            right: 2.5rem;
-            top: 50%;
-            transform: translateY(-50%);
-            height: 200px; /* Boyutu büyüttüm */
-            width: auto;
-            opacity: 0.9;
-            transition: all 0.3s ease;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+          position: absolute;
+          right: 2.5rem;
+          top: 50%;
+          transform: translateY(-50%);
+          height: 200px;
+          /* Boyutu büyüttüm */
+          width: auto;
+          opacity: 0.9;
+          transition: all 0.3s ease;
+          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
         .header-logo:hover {
-            opacity: 1;
-            transform: translateY(-50%) scale(1.05);
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+          opacity: 1;
+          transform: translateY(-50%) scale(1.05);
+          filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
         }
 
         .section-title {
-            position: relative;
-            margin-bottom: 1rem;
-            color: #2c3e50;
-            font-weight: 700;
-            font-size: 1.8rem;
-            letter-spacing: -0.5px;
-            padding-right: 100px; /* Logo için daha fazla alan */
+          position: relative;
+          margin-bottom: 1rem;
+          color: #2c3e50;
+          font-weight: 700;
+          font-size: 1.8rem;
+          letter-spacing: -0.5px;
+          padding-right: 100px;
+          /* Logo için daha fazla alan */
         }
 
         .section-title:after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -8px;
-            width: 50px;
-            height: 3px;
-            background: var(--primary-gradient);
-            border-radius: 3px;
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: -8px;
+          width: 50px;
+          height: 3px;
+          background: var(--primary-gradient);
+          border-radius: 3px;
         }
 
         .section-subtitle {
-            color: #6c757d;
-            font-weight: 400;
-            font-size: 1rem;
-            max-width: 700px;
-            padding-right: 60px;
+          color: #6c757d;
+          font-weight: 400;
+          font-size: 1rem;
+          max-width: 700px;
+          padding-right: 60px;
         }
 
         .card-slot {
-            background: var(--light-bg);
-            backdrop-filter: blur(8px);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--card-shadow);
-            margin-bottom: 1.5rem;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            border: none;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid rgba(0, 0, 0, 0.03);
+          background: var(--light-bg);
+          backdrop-filter: blur(8px);
+          border-radius: var(--border-radius);
+          overflow: hidden;
+          box-shadow: var(--card-shadow);
+          margin-bottom: 1.5rem;
+          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+          border: none;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          border: 1px solid rgba(0, 0, 0, 0.03);
         }
 
         .card-slot:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+          transform: translateY(-5px);
+          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
         }
 
         .card-header-custom {
-            background: var(--primary-gradient);
-            color: white;
-            padding: 1.25rem;
-            border-bottom: none;
+          background: var(--primary-gradient);
+          color: white;
+          padding: 1.25rem;
+          border-bottom: none;
         }
 
         .doctor-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-            color: white;
-            line-height: 1.4;
+          font-size: 1.1rem;
+          font-weight: 600;
+          margin-bottom: 0.25rem;
+          color: white;
+          line-height: 1.4;
         }
 
         .specialty-badge {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: #fff;
-            font-weight: 500;
-            padding: 0.3rem 0.75rem;
-            border-radius: 50px;
-            font-size: 0.7rem;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: inline-block;
-            margin-top: 0.3rem;
+          background-color: rgba(255, 255, 255, 0.2);
+          color: #fff;
+          font-weight: 500;
+          padding: 0.3rem 0.75rem;
+          border-radius: 50px;
+          font-size: 0.7rem;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          display: inline-block;
+          margin-top: 0.3rem;
         }
 
         .card-body {
-            padding: 1.25rem;
-            flex-grow: 1;
+          padding: 1.25rem;
+          flex-grow: 1;
         }
 
         .section-label {
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 0.8rem;
-            display: flex;
-            align-items: center;
-            font-size: 0.9rem;
+          font-weight: 600;
+          color: #2c3e50;
+          margin-bottom: 0.8rem;
+          display: flex;
+          align-items: center;
+          font-size: 0.9rem;
         }
 
         .section-label i {
-            margin-right: 0.6rem;
-            color: var(--accent-color);
-            font-size: 1rem;
+          margin-right: 0.6rem;
+          color: var(--accent-color);
+          font-size: 1rem;
         }
 
         .time-slot {
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 8px;
-            padding: 0.5rem 0.9rem;
-            margin: 0.25rem;
-            display: inline-block;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.85rem;
-            font-weight: 500;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
-            color: #4a4a4a;
+          background-color: rgba(255, 255, 255, 0.8);
+          border-radius: 8px;
+          padding: 0.5rem 0.9rem;
+          margin: 0.25rem;
+          display: inline-block;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          font-size: 0.85rem;
+          font-weight: 500;
+          border: 1px solid rgba(0, 0, 0, 0.05);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+          color: #4a4a4a;
         }
 
         .time-slot:hover {
-            background-color: rgba(108, 99, 255, 0.1);
-            border-color: rgba(108, 99, 255, 0.2);
+          background-color: rgba(108, 99, 255, 0.1);
+          border-color: rgba(108, 99, 255, 0.2);
         }
 
         .time-slot.selected {
-            background: var(--accent-color);
-            border-color: var(--accent-color);
-            color: white;
-            box-shadow: 0 3px 8px rgba(108, 99, 255, 0.2);
+          background: var(--accent-color);
+          border-color: var(--accent-color);
+          color: white;
+          box-shadow: 0 3px 8px rgba(108, 99, 255, 0.2);
         }
 
         .location-info-item {
-            margin-bottom: 0.6rem;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: flex-start;
+          margin-bottom: 0.6rem;
+          font-size: 0.85rem;
+          display: flex;
+          align-items: flex-start;
         }
 
         .location-info-item i {
-            color: var(--accent-color);
-            margin-right: 0.7rem;
-            margin-top: 0.15rem;
-            font-size: 0.9rem;
+          color: var(--accent-color);
+          margin-right: 0.7rem;
+          margin-top: 0.15rem;
+          font-size: 0.9rem;
         }
 
         .location-info-text {
-            flex: 1;
+          flex: 1;
         }
 
         .divider {
-            margin: 1.25rem 0;
-            border-top: 1px solid rgba(0, 0, 0, 0.06);
+          margin: 1.25rem 0;
+          border-top: 1px solid rgba(0, 0, 0, 0.06);
         }
 
         .btn-primary {
-            background: var(--accent-color);
-            border: none;
-            padding: 0.6rem 1.25rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 10px rgba(108, 99, 255, 0.2);
-            font-size: 0.9rem;
+          background: var(--accent-color);
+          border: none;
+          padding: 0.6rem 1.25rem;
+          font-weight: 500;
+          letter-spacing: 0.5px;
+          border-radius: 8px;
+          transition: all 0.3s ease;
+          box-shadow: 0 3px 10px rgba(108, 99, 255, 0.2);
+          font-size: 0.9rem;
         }
 
         .btn-primary:hover {
-            background: #5a52e0;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+          background: #5a52e0;
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
         }
 
         .btn-primary:active {
-            transform: translateY(0);
+          transform: translateY(0);
         }
 
         .btn-success {
-            background: #28a745;
-            box-shadow: 0 3px 10px rgba(40, 167, 69, 0.2);
+          background: #28a745;
+          box-shadow: 0 3px 10px rgba(40, 167, 69, 0.2);
         }
 
         .no-results-container {
-            background: var(--light-bg);
-            backdrop-filter: blur(8px);
-            border-radius: var(--border-radius);
-            padding: 2.5rem;
-            box-shadow: var(--card-shadow);
-            text-align: center;
-            max-width: 500px;
-            margin: 2.5rem auto;
-            border: 1px solid rgba(255, 255, 255, 0.4);
+          background: var(--light-bg);
+          backdrop-filter: blur(8px);
+          border-radius: var(--border-radius);
+          padding: 2.5rem;
+          box-shadow: var(--card-shadow);
+          text-align: center;
+          max-width: 500px;
+          margin: 2.5rem auto;
+          border: 1px solid rgba(255, 255, 255, 0.4);
         }
 
         .no-results-icon {
-            font-size: 3.5rem;
-            color: var(--accent-color);
-            margin-bottom: 1.5rem;
-            opacity: 0.8;
+          font-size: 3.5rem;
+          color: var(--accent-color);
+          margin-bottom: 1.5rem;
+          opacity: 0.8;
         }
 
         .no-results-title {
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #2c3e50;
-            font-size: 1.5rem;
+          font-weight: 600;
+          margin-bottom: 1rem;
+          color: #2c3e50;
+          font-size: 1.5rem;
         }
 
         .no-results-text {
-            color: #6c757d;
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
+          color: #6c757d;
+          margin-bottom: 1.5rem;
+          font-size: 0.95rem;
         }
 
         .card-footer-custom {
-            background: transparent;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
-            padding: 1rem 1.25rem;
+          background: transparent;
+          border-top: 1px solid rgba(0, 0, 0, 0.05);
+          padding: 1rem 1.25rem;
         }
 
         @media (max-width: 991.98px) {
-            .header-logo {
-                height: 40px;
-                right: 1.5rem;
-            }
+          .header-logo {
+            height: 40px;
+            right: 1.5rem;
+          }
 
-            .section-title {
-                font-size: 1.6rem;
-                padding-right: 50px;
-            }
+          .section-title {
+            font-size: 1.6rem;
+            padding-right: 50px;
+          }
         }
 
         @media (max-width: 767.98px) {
-            .header-container {
-                padding: 1.5rem;
-                text-align: center;
-            }
+          .header-container {
+            padding: 1.5rem;
+            text-align: center;
+          }
 
-            .header-logo {
-                position: static;
-                transform: none;
-                margin: 1rem auto 0;
-                display: block;
-                height: 45px;
-            }
+          .header-logo {
+            position: static;
+            transform: none;
+            margin: 1rem auto 0;
+            display: block;
+            height: 45px;
+          }
 
-            .section-title, .section-subtitle {
-                padding-right: 0;
-                text-align: center;
-            }
+          .section-title,
+          .section-subtitle {
+            padding-right: 0;
+            text-align: center;
+          }
 
-            .section-title:after {
-                left: 50%;
-                transform: translateX(-50%);
-            }
+          .section-title:after {
+            left: 50%;
+            transform: translateX(-50%);
+          }
 
-            .no-results-container {
-                padding: 2rem;
-                margin: 2rem auto;
-            }
+          .no-results-container {
+            padding: 2rem;
+            margin: 2rem auto;
+          }
         }
 
         @media (max-width: 575.98px) {
-            .section-title {
-                font-size: 1.4rem;
-            }
+          .section-title {
+            font-size: 1.4rem;
+          }
 
-            .card-header-custom {
-                padding: 1rem;
-            }
+          .card-header-custom {
+            padding: 1rem;
+          }
 
-            .doctor-name {
-                font-size: 1rem;
-            }
+          .doctor-name {
+            font-size: 1rem;
+          }
 
-            .card-body {
-                padding: 1rem;
-            }
+          .card-body {
+            padding: 1rem;
+          }
 
-            .no-results-container {
-                padding: 1.5rem;
-            }
+          .no-results-container {
+            padding: 1.5rem;
+          }
+        }
+
+        .custom-xp-modal {
+          background: #e8f0fe;
+          border: 2px solid #1a73e8;
+          border-radius: 8px;
+          box-shadow: 0 0 0 4px #d2e3fc inset;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          max-height: 90vh;
+          overflow-y: auto;
+        }
+
+        .btn-close-xp {
+          width: 24px;
+          height: 24px;
+          background: linear-gradient(to bottom, #ff4e4e, #a50000);
+          border: 1px solid #5a0000;
+          border-radius: 4px;
+          font-weight: bold;
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 16px;
+          cursor: pointer;
+          position: relative;
+          transition: background 0.3s;
+        }
+
+        .btn-close-xp::after {
+          content: "×";
+          font-size: 18px;
+          line-height: 1;
+        }
+
+        .btn-close-xp:hover {
+          background: linear-gradient(to bottom, #ff7878, #c40000);
+        }
+
+        @media (max-width: 768px) {
+          .modal-dialog {
+            margin: 1rem;
+          }
+
+          .modal-content {
+            border-radius: 10px;
+          }
+
+          .modal-title {
+            font-size: 1rem;
+          }
         }
     </style>
 </head>
@@ -349,7 +403,6 @@
             </div>
         </div>
     </div>
-
     <div th:if="${slots != null and !slots.isEmpty()}">
         <div class="row g-4">
             <div th:each="slot : ${slots}" class="col-12 col-sm-6 col-lg-4">
@@ -366,42 +419,111 @@
                                 <i class="far fa-clock"></i> Müsait Zaman Aralıkları
                             </h6>
                             <div class="time-slots-container">
-                                <span class="time-slot">
-                                    <span th:text="${#temporals.format(slot.appointmentDateTimeStart, 'HH:mm')} + ' - ' + ${#temporals.format(slot.appointmentDateTimeEnd, 'HH:mm')}"></span>
-                                </span>
+                    <span class="time-slot">
+                      <span th:text="${#temporals.format(slot.appointmentDateTimeStart, 'HH:mm')} + ' - ' + ${#temporals.format(slot.appointmentDateTimeEnd, 'HH:mm')}"></span>
+																</span>
                             </div>
                         </div>
-
                         <div class="divider"></div>
-
                         <div class="location-info">
                             <h6 class="section-label">
                                 <i class="fas fa-map-marker-alt"></i> Lokasyon Bilgileri
+
                             </h6>
                             <div class="location-info-item">
                                 <i class="fas fa-hospital"></i>
-                                <div class="location-info-text">Hastane: <span th:text="${slot.hospitalId}"></span> | <span th:text="${slot.hospitalName}"></span></div>
+                                <div class="location-info-text">Hastane:
+                                    <span th:text="${slot.hospitalId}"></span> |
+
+                                    <span th:text="${slot.hospitalName}"></span>
+                                </div>
                             </div>
                             <div class="location-info-item">
                                 <i class="fas fa-clinic-medical"></i>
-                                <div class="location-info-text">Klinik: <span th:text="${slot.clinicId}"></span> | <span th:text="${slot.clinicName}"></span></div>
+                                <div class="location-info-text">Klinik:
+                                    <span th:text="${slot.clinicId}"></span> |
+                                    <span
+                                            th:text="${slot.clinicName}"></span>
+                                </div>
                             </div>
                             <div class="location-info-item">
                                 <i class="fas fa-city"></i>
-                                <div class="location-info-text">Konum: <span th:text="${slot.cityId} + ' / ' + ${slot.districtId}"></span> <span th:text="${slot.cityName} + ' / ' + ${slot.districtName}"></span></div>
+                                <div class="location-info-text">Konum:
+                                    <span
+                                            th:text="${slot.cityId} + ' / ' + ${slot.districtId}"></span>
+                                    <span
+                                            th:text="${slot.cityName} + ' / ' + ${slot.districtName}"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer card-footer-custom">
-                        <button class="btn btn-primary w-100" onclick="selectTimeSlot(this)">
+                        <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#appointmentModal">
                             <i class="far fa-calendar-check me-2"></i> Randevu Al
+
+                        </button>
+                        <button class="btn btn-primary w-100 openXpModalBtn"
+                                data-bs-toggle="modal"
+                                data-bs-target="#xpModal"
+                                th:attr="data-doctor-name=${slot.doctorName},
+                                   data-clinic-name=${slot.clinicName},
+                                   data-hospital-name=${slot.hospitalName},
+                                   data-time-range=${#temporals.format(slot.appointmentDateTimeStart, 'HH:mm') + ' - ' + #temporals.format(slot.appointmentDateTimeEnd, 'HH:mm')}">
+                            <i class="far fa-calendar-check me-2"></i> Randevu Al 2
+
                         </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+    <!-- Modal -->
+    <div class="modal fade" id="xpModal" tabindex="-1" aria-labelledby="xpModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <!-- responsive boyut -->
+            <div class="modal-content custom-xp-modal">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="xpModalLabel">Windows XP Stili Modal</h5>
+                    <button type="button" class="btn-close-xp" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3 row">
+                            <label for="modalDoctorName" class="col-sm-3 col-form-label">Doktor</label>
+                            <div class="col-sm-9">
+                                <input type="text" readonly class="form-control" id="modalDoctorName" />
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="modalClinicName" class="col-sm-3 col-form-label">Klinik</label>
+                            <div class="col-sm-9">
+                                <input type="text" readonly class="form-control" id="modalClinicName" />
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="modalHospitalName" class="col-sm-3 col-form-label">Hastane</label>
+                            <div class="col-sm-9">
+                                <input type="text" readonly class="form-control" id="modalHospitalName" />
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="modalTimeRange" class="col-sm-3 col-form-label">Saat</label>
+                            <div class="col-sm-9">
+                                <input type="text" readonly class="form-control" id="modalTimeRange" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="modalDoctorNote" class="form-label">Doktora Not (isteğe bağlı)</label>
+                            <textarea class="form-control" id="modalDoctorNote" rows="3" placeholder="Varsa notunuzu yazınız..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Tamam</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div th:if="${slots == null or slots.isEmpty()}">
         <div class="no-results-container">
             <i class="far fa-calendar-times no-results-icon"></i>
@@ -409,11 +531,11 @@
             <p class="no-results-text">Lütfen farklı bir doktor veya tarih seçerek tekrar deneyiniz.</p>
             <a href="/appointment" class="btn btn-primary">
                 <i class="fas fa-arrow-left me-2"></i> Randevu Arama Sayfasına Dön
+
             </a>
         </div>
     </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function selectTimeSlot(button) {
@@ -429,11 +551,53 @@
 
         // Butonu devre dışı bırak
         button.disabled = true;
-        button.innerHTML = '<i class="far fa-check-circle me-2"></i> Randevu Talebi Gönderildi';
+        button.innerHTML = '
+									<i class="far fa-check-circle me-2"></i> Randevu Talebi Gönderildi';
         button.classList.remove('btn-primary');
         button.classList.add('btn-success');
         button.style.boxShadow = '0 3px 10px rgba(40, 167, 69, 0.2)';
     }
+
+</script>
+<script>
+    document.getElementById("appointmentForm").addEventListener("submit", function(e) {
+        e.preventDefault(); // Sayfa yenilenmesin
+
+        const formData = new FormData(this);
+
+        fetch('/appointment/save', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => {
+            if (res.ok) {
+                alert("Randevu kaydedildi!");
+                const modal = bootstrap.Modal.getInstance(document.getElementById('appointmentModal'));
+                modal.hide();
+            } else {
+                alert("Hata oluştu!");
+            }
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.openXpModalBtn').forEach(button => {
+            button.addEventListener('click', function () {
+                // Butondan verileri al
+                const doctor = button.getAttribute('data-doctor-name');
+                const clinic = button.getAttribute('data-clinic-name');
+                const hospital = button.getAttribute('data-hospital-name');
+                const time = button.getAttribute('data-time-range');
+
+                // Modal içindeki inputlara verileri aktarma
+                document.getElementById('modalDoctorName').value = doctor; // input alanına value atıyoruz
+                document.getElementById('modalClinicName').value = clinic;
+                document.getElementById('modalHospitalName').value = hospital;
+                document.getElementById('modalTimeRange').value = time;
+            });
+        });
+    });
 </script>
 </body>
 </html>
