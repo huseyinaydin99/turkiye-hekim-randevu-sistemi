@@ -18,7 +18,7 @@
         }
 
         body {
-            background: linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)),
+            background: linear-gradient(rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.0)),
                         url('/images/backgrounds/medical-office-bg.jpg');
             background-size: cover;
             background-attachment: fixed;
@@ -343,7 +343,7 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="header-container">
-                <img src="/images/hospital-logo3.jpg" alt="Medical Logo" class="header-logo">
+                <img src="/images/hospital-logo3.png" alt="Medical Logo" class="header-logo">
                 <h1 class="section-title">Uygun Randevu Saatleri</h1>
                 <p class="section-subtitle">Aşağıda seçtiğiniz bilgilere göre doktorunuzun müsait olduğu zaman aralıkları ile alınabilecek randevular listelenmiştir. Randevu almak için aşağıdan kendinize uygun bir zaman seçiniz.</p>
             </div>
@@ -356,8 +356,8 @@
                 <div class="card card-slot">
                     <div class="card-header card-header-custom">
                         <div class="d-flex flex-column">
-                            <h3 class="doctor-name mb-1" th:text="${slot.doctorId}"></h3>
-                            <span class="specialty-badge" th:text="${slot.clinicId}"></span>
+                            <h3 class="doctor-name mb-1" th:text="${slot.doctorName}"></h3>
+                            <span class="specialty-badge" th:text="${slot.clinicName}"></span>
                         </div>
                     </div>
                     <div class="card-body">
@@ -380,15 +380,15 @@
                             </h6>
                             <div class="location-info-item">
                                 <i class="fas fa-hospital"></i>
-                                <div class="location-info-text">Hastane: <span th:text="${slot.hospitalId}"></span></div>
+                                <div class="location-info-text">Hastane: <span th:text="${slot.hospitalId}"></span> | <span th:text="${slot.hospitalName}"></span></div>
                             </div>
                             <div class="location-info-item">
                                 <i class="fas fa-clinic-medical"></i>
-                                <div class="location-info-text">Klinik: <span th:text="${slot.clinicId}"></span></div>
+                                <div class="location-info-text">Klinik: <span th:text="${slot.clinicId}"></span> | <span th:text="${slot.clinicName}"></span></div>
                             </div>
                             <div class="location-info-item">
                                 <i class="fas fa-city"></i>
-                                <div class="location-info-text">Konum: <span th:text="${slot.cityId} + ' / ' + ${slot.districtId}"></span></div>
+                                <div class="location-info-text">Konum: <span th:text="${slot.cityId} + ' / ' + ${slot.districtId}"></span> <span th:text="${slot.cityName} + ' / ' + ${slot.districtName}"></span></div>
                             </div>
                         </div>
                     </div>
