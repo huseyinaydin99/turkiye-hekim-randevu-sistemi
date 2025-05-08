@@ -6,21 +6,19 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import tr.com.huseyinaydin.dtos.AppointmentDto;
+import tr.com.huseyinaydin.dtos.AvailableAppointmentDto;
 import tr.com.huseyinaydin.dtos.appointments.*;
 import tr.com.huseyinaydin.dtos.login.LoginRequest;
 import tr.com.huseyinaydin.entities.Appointment;
+import tr.com.huseyinaydin.entities.AvailableAppointment;
 import tr.com.huseyinaydin.exceptions.ConflictException;
 import tr.com.huseyinaydin.security.AppUserDetails;
 import tr.com.huseyinaydin.services.*;
-import tr.com.huseyinaydin.session.UserSession;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -107,13 +105,28 @@ public class AppointmentSearchViewController {
         //List<AppointmentDto> appointments = new ArrayList<>();
         //List<AppointmentDto> appointments = generateRandomAppointments(5);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm:ss", new Locale("tr", "TR"));
-        List<AppointmentTimeSlot> slots = appointmentSearchService.getAvailableTimeSlots(Long.parseLong(searchForm.getDoctor()), LocalDate.of(2025,06,07));
+        //List<AppointmentTimeSlot> slots = appointmentSearchService.getAvailableTimeSlots(Long.parseLong(searchForm.getDoctor()), LocalDate.of(2025,06,07));
+
+        Long cityId = Long.parseLong(searchForm.getCity());
+        Long distrcitId = Long.parseLong(searchForm.getDistrict());
+        Long hospitalId = Long.parseLong(searchForm.getHospital());
+        Long clinicId = Long.parseLong(searchForm.getClinic());
+        Long doctorId = Long.parseLong(searchForm.getDoctor());
+        //2025-05-09 09:00:00
+        DateTimeFormatter formatterPostgresql = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime startDate = LocalDateTime.parse("2025-05-09 09:00:00", formatterPostgresql);
+        //LocalDateTime endDate = LocalDateTime.now().plusYears(1);
+
+        /*AppointmentSearchCriteria appointmentSearchCriteria =
+                new AppointmentSearchCriteria(cityId, distrcitId, hospitalId, clinicId, doctorId, startDate);*/
+
+        List<AvailableAppointmentDto> availableApoointments = appointmentSearchService.findAvailableAppointments(cityId, distrcitId, hospitalId, clinicId, doctorId, startDate);
         ModelAndView page = new ModelAndView("appointmentResult");
-        page.addObject("slots", slots);
+        page.addObject("slots", availableApoointments);
         page.addObject("formatter", formatter);
         //page.addObject("backgroundImage", "/images/backgrounds/medical-office-bg.jpg");
 
-        if (slots.isEmpty()) {
+        if (availableApoointments.isEmpty()) {
             page.addObject("message", "Seçtiğiniz kriterlere uygun randevu bulunamadı.");
         }
 

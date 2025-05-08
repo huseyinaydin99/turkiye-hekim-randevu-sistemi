@@ -10,11 +10,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppointmentSearchCriteria {
+    private Long cityId;
+    private Long districtId;
+    private Long hospitalId;
+    private Long clinicId;
     private Long doctorId;
     private LocalDateTime startDate;
-    private LocalDateTime endDate;
-
-    public boolean hasDateRange() {
-        return startDate != null && endDate != null;
-    }
+    //private LocalDateTime endDate;
 }

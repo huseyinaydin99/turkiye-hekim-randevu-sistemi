@@ -1,26 +1,26 @@
 package tr.com.huseyinaydin.services.impls;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tr.com.huseyinaydin.dtos.AvailableAppointmentDto;
 import tr.com.huseyinaydin.dtos.appointments.*;
-import tr.com.huseyinaydin.entities.Appointment;
-import tr.com.huseyinaydin.entities.Clinic;
-import tr.com.huseyinaydin.entities.Doctor;
-import tr.com.huseyinaydin.entities.Hospital;
+import tr.com.huseyinaydin.entities.*;
 import tr.com.huseyinaydin.exceptions.AppointmentNotAvailableException;
 import tr.com.huseyinaydin.exceptions.ConflictException;
 import tr.com.huseyinaydin.exceptions.ResourceNotFoundException;
 import tr.com.huseyinaydin.repositories.*;
-import tr.com.huseyinaydin.services.AppUserService;
 import tr.com.huseyinaydin.services.AppointmentSearchService;
 
+import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,21 +35,34 @@ public class AppointmentSearchServiceImpl implements AppointmentSearchService {
     private final DoctorRepository doctorRepository;
     private final ClinicRepository clinicRepository;
     private final HospitalRepository hospitalRepository;
+    private final AvailableAppointmentRepository availableAppointmentRepository;
     private final AppUserRepository appUserRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     @Transactional(readOnly = true)
-    public List<Appointment> findAvailableAppointments(AppointmentSearchCriteria criteria) {
-        validateSearchCriteria(criteria);
+    public List<AvailableAppointment> findAvailableAppointments(AppointmentSearchCriteria criteria) {
+        return availableAppointmentRepository.searchByCriteria(criteria.getCityId(), criteria.getDistrictId(), criteria.getHospitalId(), criteria.getClinicId(), criteria.getDoctorId());
+    }
 
-        Doctor doctor = doctorRepository.findById(criteria.getDoctorId())
-                .orElseThrow(() -> new EntityNotFoundException("Doktor bulunamadı Id: " + criteria.getDoctorId()));
-
-        if (criteria.hasDateRange()) {
-            return appointmentRepository.findByDoctorIdAndAppointmentDateTimeBetween(
-                    criteria.getDoctorId(), criteria.getStartDate(), criteria.getEndDate());
-        }
-        return appointmentRepository.findByDoctor(doctor);
+    @Override
+    public List<AvailableAppointmentDto> findAvailableAppointments(Long cityId, Long districtId,
+                                                                Long hospitalId, Long clinicId, Long doctorId, LocalDateTime startDate) {
+        List<AvailableAppointment> availableAppointments = availableAppointmentRepository.searchByCriteria(cityId, districtId, hospitalId,
+                clinicId, doctorId);
+        List<AvailableAppointmentDto> dtoList = availableAppointments.stream()
+                .map(appointment -> AvailableAppointmentDto.builder()
+                        .id(appointment.getId())
+                        .appointmentDateTimeStart(appointment.getAppointmentDateTimeStart())
+                        .appointmentDateTimeEnd(appointment.getAppointmentDateTimeEnd())
+                        .doctorId(appointment.getDoctor() != null ? appointment.getDoctor().getId() : null)
+                        .clinicId(appointment.getClinic() != null ? appointment.getClinic().getId() : null)
+                        .hospitalId(appointment.getHospital() != null ? appointment.getHospital().getId() : null)
+                        .districtId(appointment.getDistrict() != null ? appointment.getDistrict().getId() : null)
+                        .cityId(appointment.getCity() != null ? appointment.getCity().getId() : null)
+                        .build())
+                .collect(Collectors.toList());
+        return dtoList;
     }
 
     private void validateSearchCriteria(AppointmentSearchCriteria criteria) {

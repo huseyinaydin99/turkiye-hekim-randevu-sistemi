@@ -356,8 +356,8 @@
                 <div class="card card-slot">
                     <div class="card-header card-header-custom">
                         <div class="d-flex flex-column">
-                            <h3 class="doctor-name mb-1" th:text="${slot.doctorName}"></h3>
-                            <span class="specialty-badge" th:text="${slot.specialty}"></span>
+                            <h3 class="doctor-name mb-1" th:text="${slot.doctorId}"></h3>
+                            <span class="specialty-badge" th:text="${slot.clinicId}"></span>
                         </div>
                     </div>
                     <div class="card-body">
@@ -367,7 +367,7 @@
                             </h6>
                             <div class="time-slots-container">
                                 <span class="time-slot">
-                                    <span th:text="${#temporals.format(slot.startTime, 'HH:mm')} + ' - ' + ${#temporals.format(slot.endTime, 'HH:mm')}"></span>
+                                    <span th:text="${#temporals.format(slot.appointmentDateTimeStart, 'HH:mm')} + ' - ' + ${#temporals.format(slot.appointmentDateTimeEnd, 'HH:mm')}"></span>
                                 </span>
                             </div>
                         </div>
