@@ -110,7 +110,10 @@ public class AppointmentSearchViewController {
         Long distrcitId = Long.parseLong(searchForm.getDistrict());
         Long hospitalId = Long.parseLong(searchForm.getHospital());
         Long clinicId = Long.parseLong(searchForm.getClinic());
-        Long doctorId = Long.parseLong(searchForm.getDoctor());
+        Long doctorId = null;
+        if(searchForm.getDoctor() != null)
+        if(!searchForm.getDoctor().isBlank() || !searchForm.getDoctor().isEmpty())
+            doctorId = Long.parseLong(searchForm.getDoctor());
         //2025-05-09 09:00:00
         DateTimeFormatter formatterPostgresql = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime startDate = LocalDateTime.parse("2025-05-09 09:00:00", formatterPostgresql);
@@ -118,8 +121,11 @@ public class AppointmentSearchViewController {
 
         /*AppointmentSearchCriteria appointmentSearchCriteria =
                 new AppointmentSearchCriteria(cityId, distrcitId, hospitalId, clinicId, doctorId, startDate);*/
-
-        List<AvailableAppointmentDTO> availableApoointments = appointmentSearchService.findAvailableAppointments(cityId, distrcitId, hospitalId, clinicId, doctorId, startDate);
+        List<AvailableAppointmentDTO> availableApoointments = null;
+        if(doctorId == null)
+            availableApoointments = appointmentSearchService.findAvailableAppointments(cityId, distrcitId, hospitalId, clinicId, startDate);
+        else
+            availableApoointments = appointmentSearchService.findAvailableAppointments(cityId, distrcitId, hospitalId, clinicId, doctorId, startDate);
         ModelAndView page = new ModelAndView("appointmentResult");
         page.addObject("slots", availableApoointments);
         page.addObject("formatter", formatter);

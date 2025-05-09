@@ -47,27 +47,55 @@ public class AppointmentSearchServiceImpl implements AppointmentSearchService {
     @Override
     public List<AvailableAppointmentDTO> findAvailableAppointments(Long cityId, Long districtId,
                                                                    Long hospitalId, Long clinicId, Long doctorId, LocalDateTime startDate) {
-
-
-
         List<AvailableAppointment> availableAppointments = availableAppointmentRepository.searchByCriteria(cityId, districtId, hospitalId,
                 clinicId, doctorId);
         // DTO listesi oluşturuluyor
         List<AvailableAppointmentDTO> dtoList = availableAppointments.stream()
                 .map(appointment -> {
-                    // İlgili nesneleri alıyoruz
                     Clinic clinic = clinicRepository.findById(appointment.getClinic() != null ? appointment.getClinic().getId() : clinicId).get();
                     Hospital hospital = hospitalRepository.findById(appointment.getHospital() != null ? appointment.getHospital().getId() : hospitalId).get();
                     District district = districtRepository.findById(appointment.getDistrict() != null ? appointment.getDistrict().getId() : districtId).get();
                     City city = cityRepository.findById(appointment.getCity() != null ? appointment.getCity().getId() : cityId).get();
                     Doctor doctor = doctorRepository.findById(appointment.getDoctor() != null ? appointment.getDoctor().getId() : doctorId).get();
 
-                    // DTO'yu oluşturuyoruz
                     return AvailableAppointmentDTO.builder()
                             .id(appointment.getId())
                             .appointmentDateTimeStart(appointment.getAppointmentDateTimeStart())
                             .appointmentDateTimeEnd(appointment.getAppointmentDateTimeEnd())
                             .doctorId(doctor != null ? doctor.getId() : null)
+                            .clinicId(clinic != null ? clinic.getId() : null)
+                            .hospitalId(hospital != null ? hospital.getId() : null)
+                            .districtId(district != null ? district.getId() : null)
+                            .cityId(city != null ? city.getId() : null)
+                            .cityName(city.getName())
+                            .clinicName(clinic.getName())
+                            .hospitalName(hospital.getName())
+                            .doctorName(doctor.getFullName())
+                            .districtName(district.getName())
+                            .build();
+                })
+                .collect(Collectors.toList());
+        return dtoList;
+    }
+
+    @Override
+    public List<AvailableAppointmentDTO> findAvailableAppointments(Long cityId, Long districtId,
+                                                                   Long hospitalId, Long clinicId, LocalDateTime startDate) {
+        List<AvailableAppointment> availableAppointments = availableAppointmentRepository.searchByCriteria(cityId, districtId, hospitalId,
+                clinicId);
+        List<AvailableAppointmentDTO> dtoList = availableAppointments.stream()
+                .map(appointment -> {
+                    Clinic clinic = clinicRepository.findById(appointment.getClinic() != null ? appointment.getClinic().getId() : clinicId).get();
+                    Hospital hospital = hospitalRepository.findById(appointment.getHospital() != null ? appointment.getHospital().getId() : hospitalId).get();
+                    District district = districtRepository.findById(appointment.getDistrict() != null ? appointment.getDistrict().getId() : districtId).get();
+                    City city = cityRepository.findById(appointment.getCity() != null ? appointment.getCity().getId() : cityId).get();
+                    Doctor doctor = doctorRepository.findById(appointment.getDoctor().getId()).get();
+
+                    return AvailableAppointmentDTO.builder()
+                            .id(appointment.getId())
+                            .appointmentDateTimeStart(appointment.getAppointmentDateTimeStart())
+                            .appointmentDateTimeEnd(appointment.getAppointmentDateTimeEnd())
+                            //.doctorId(doctor != null ? doctor.getId() : null)
                             .clinicId(clinic != null ? clinic.getId() : null)
                             .hospitalId(hospital != null ? hospital.getId() : null)
                             .districtId(district != null ? district.getId() : null)

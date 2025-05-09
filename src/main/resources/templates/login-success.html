@@ -336,8 +336,7 @@
                 <div class="mb-4">
                     <label for="doctor" class="form-label">Doktor</label>
                     <select class="form-select" id="doctor" th:field="*{doctor}"
-                            th:classappend="${#fields.hasErrors('doctor')} ? 'is-invalid' : ''"
-                            required>
+                            th:classappend="${#fields.hasErrors('doctor')} ? 'is-invalid' : ''">
                         <option selected value="">Önce klinik seçiniz</option>
                     </select>
                     <div class="invalid-feedback">Lütfen bir doktor seçin!</div>

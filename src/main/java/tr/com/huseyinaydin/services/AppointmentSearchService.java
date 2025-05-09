@@ -18,4 +18,6 @@ public interface AppointmentSearchService {
     Appointment createAppointment(AppointmentRequest request);
     //List<TimeSlot> getAvailableTimeSlots(Long doctorId, LocalDate date);
     List<AppointmentTimeSlot> getAvailableTimeSlots(Long doctorId, LocalDate date);
+    List<AvailableAppointmentDTO> findAvailableAppointments(Long cityId, Long districtId,
+                                                            Long hospitalId, Long clinicId, LocalDateTime startDate);
 }

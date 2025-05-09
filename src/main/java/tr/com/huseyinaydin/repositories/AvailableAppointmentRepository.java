@@ -47,4 +47,21 @@ public interface AvailableAppointmentRepository extends JpaRepository<AvailableA
             @Param("doctorId") Long doctorId
             /*@Param("startDate") LocalDateTime startDate*/
     );
+
+    @Query(value = """
+    SELECT * FROM available_appointment a
+    WHERE (:cityId IS NULL OR a.city_id = :cityId)
+      AND (:districtId IS NULL OR a.district_id = :districtId)
+      AND (:hospitalId IS NULL OR a.hospital_id = :hospitalId)
+      AND (:clinicId IS NULL OR a.clinic_id = :clinicId)
+      AND (a.available_appointment_date_time_start >= TO_TIMESTAMP('2025-05-09 09:00:00', 'YYYY-MM-DD HH24:MI:SS'))
+    ORDER BY a.available_appointment_date_time_start ASC
+    """, nativeQuery = true)
+    List<AvailableAppointment> searchByCriteria(
+            @Param("cityId") Long cityId,
+            @Param("districtId") Long districtId,
+            @Param("hospitalId") Long hospitalId,
+            @Param("clinicId") Long clinicId
+            /*@Param("startDate") LocalDateTime startDate*/
+    );
 }
