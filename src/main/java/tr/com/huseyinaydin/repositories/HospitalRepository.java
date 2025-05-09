@@ -9,5 +9,6 @@ import java.util.List;
 public interface HospitalRepository extends JpaRepository<Hospital, Long> {
     // City'ye göre hastaneleri bul
     List<Hospital> findByCity(City city);
+    List<Hospital> findByCityId(Long cityId);
     List<Hospital> findByDistrictId(Long districtId);
 }

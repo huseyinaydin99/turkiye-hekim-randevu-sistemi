@@ -9,4 +9,5 @@ import java.util.List;
 public interface ClinicRepository extends JpaRepository<Clinic, Long> {
     // Hospital'a göre Clinic'leri bul
     List<Clinic> findByHospital(Hospital hospital);
+    List<Clinic> findByHospitalId(Long hospitalId);
 }
