@@ -6,6 +6,7 @@ import tr.com.huseyinaydin.dtos.login.AllFieldLoginResponse;
 import tr.com.huseyinaydin.dtos.login.LoginRequest;
 import tr.com.huseyinaydin.dtos.register.RegisterRequest;
 import tr.com.huseyinaydin.dtos.register.RegisterResponse;
+import tr.com.huseyinaydin.entities.AppUser;
 
 public interface AppUserService {
     RegisterResponse register(RegisterRequest dto);
@@ -14,4 +15,5 @@ public interface AppUserService {
     UserDetails getCurrentUserDetails();
     AppUserDTO getUserById(Long id);
     AppUserDTO getUserByEmail(String email);
+    AppUser findUserByEmail(String email);
 }

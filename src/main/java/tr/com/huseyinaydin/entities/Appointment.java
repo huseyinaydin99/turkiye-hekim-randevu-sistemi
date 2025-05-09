@@ -56,4 +56,16 @@ public class Appointment {
     @ManyToOne
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
+
+    public Appointment(LocalDateTime appointmentDateTime, boolean attended, String noteToDoctor, AppUser user, Doctor doctor, Clinic clinic, Hospital hospital, District district, City city) {
+        this.appointmentDateTime = appointmentDateTime;
+        this.attended = attended;
+        this.noteToDoctor = noteToDoctor;
+        this.user = user;
+        this.doctor = doctor;
+        this.clinic = clinic;
+        this.hospital = hospital;
+        this.district = district;
+        this.city = city;
+    }
 }

@@ -4,19 +4,34 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tr.com.huseyinaydin.dtos.DoctorDTO;
 import tr.com.huseyinaydin.entities.Doctor;
+import tr.com.huseyinaydin.entities.Hospital;
 import tr.com.huseyinaydin.exceptions.ResourceNotFoundException;
 import tr.com.huseyinaydin.mappers.DoctorMapper;
 import tr.com.huseyinaydin.repositories.DoctorRepository;
+import tr.com.huseyinaydin.repositories.HospitalRepository;
 import tr.com.huseyinaydin.services.DoctorService;
+import tr.com.huseyinaydin.services.impls.abstracts.BaseServiceImpl;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
-public class DoctorServiceImpl implements DoctorService {
+//@RequiredArgsConstructor
+public class DoctorServiceImpl extends BaseServiceImpl<Doctor, Long> implements DoctorService {
 
     private final DoctorRepository doctorRepository;
     private final DoctorMapper doctorMapper;
+
+    public DoctorServiceImpl(DoctorRepository doctorRepository, DoctorMapper doctorMapper) {
+        super(doctorRepository);
+        this.doctorMapper = doctorMapper;
+        this.doctorRepository = doctorRepository;
+    }
+
+    @Override
+    public Optional<Doctor> findByDoctorId(Long cityId) {
+        return doctorRepository.findById(cityId);
+    }
 
     @Override
     public DoctorDTO getDoctorById(Long id) {

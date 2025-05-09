@@ -23,4 +23,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     public List<Appointment> searchAppointments(AppointmentSearchForm searchForm) {
         return appointmentRepository.findAppointmentsByCriteria(searchForm);
     }
+
+    @Override
+    public Appointment saveAppointment(Appointment appointment) {
+        return appointmentRepository.save(appointment);
+    }
 }

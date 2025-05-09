@@ -44,6 +44,14 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
+    public AppUser findUserByEmail(String email) {
+        AppUser user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Kullanıcı bulunamadı. Email: " + email));
+
+        return user;
+    }
+
+    @Override
     public AppUserDTO getUserByEmail(String email) {
         AppUser user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Kullanıcı bulunamadı. Email: " + email));
