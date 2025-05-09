@@ -1,6 +1,7 @@
 package tr.com.huseyinaydin.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,6 +12,7 @@ import tr.com.huseyinaydin.entities.*;
 import tr.com.huseyinaydin.security.AppUserDetails;
 import tr.com.huseyinaydin.services.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Controller
@@ -32,12 +34,23 @@ public class AppointmentController {
     @ResponseBody
     public ResponseEntity<String> confirmAppointment(@RequestBody AvailableAppointmentDTO dto,
                                                      @AuthenticationPrincipal AppUserDetails currentUser) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDate today = now.toLocalDate();
+
+        Doctor doctor = doctorService.findByDoctorId(dto.getDoctorId()).get();
+        AppUser appUser = appUserService.findUserByEmail(currentUser.getUsername());
+
+        boolean alreadyTaken = appointmentService.isAppointmentAlreadyTakenToday(appUser, doctor, today);
+        if (alreadyTaken) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Aynı gün içinde bu doktor için zaten randevu aldınız.");
+        }
+
         City city = cityService.findById(dto.getCityId()).get();
         District district = districtService.findById(dto.getDistrictId()).get();
         Hospital hospital = hospitalService.findById(dto.getHospitalId()).get();
         Clinic clinic = clinicService.findById(dto.getClinicId()).get();
-        Doctor doctor = doctorService.findByDoctorId(dto.getDoctorId()).get();
-        AppUser appUser = appUserService.findUserByEmail(currentUser.getUsername());
+
 
         Appointment appointment = new Appointment(LocalDateTime.now(), true, dto.getDoctorNote(), appUser, doctor, clinic, hospital, district, city);
 

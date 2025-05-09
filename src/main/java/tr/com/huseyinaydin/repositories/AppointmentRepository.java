@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import tr.com.huseyinaydin.dtos.appointments.AppointmentSearchForm;
+import tr.com.huseyinaydin.entities.AppUser;
 import tr.com.huseyinaydin.entities.Appointment;
 import tr.com.huseyinaydin.entities.Doctor;
 
@@ -47,4 +48,12 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     @Query("SELECT a FROM Appointment a WHERE a.doctor.id = :doctorId AND DATE(a.appointmentDateTime) = :date")
     List<Appointment> findByDoctorAndDate(@Param("doctorId") Long doctorId, @Param("date") LocalDate date);
+
+    @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END " +
+            "FROM Appointment a " +
+            "WHERE a.user = :user AND a.doctor = :doctor " +
+            "AND FUNCTION('DATE', a.appointmentDateTime) = :date")
+    boolean existsByUserAndDoctorAndDate(@Param("user") AppUser user,
+                                         @Param("doctor") Doctor doctor,
+                                         @Param("date") LocalDate date);
 }

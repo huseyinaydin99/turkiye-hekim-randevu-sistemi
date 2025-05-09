@@ -554,7 +554,7 @@
             <i class="far fa-calendar-times no-results-icon"></i>
             <h3 class="no-results-title" th:text="${message} ?: 'Müsait randevu bulunamadı'"></h3>
             <p class="no-results-text">Lütfen farklı bir doktor veya tarih seçerek tekrar deneyiniz.</p>
-            <a href="/appointment" class="btn btn-primary">
+            <a href="/appointments/search" class="btn btn-primary">
                 <i class="fas fa-arrow-left me-2"></i> Randevu Arama Sayfasına Dön
             </a>
         </div>
@@ -681,7 +681,17 @@
                         popup: 'rounded-xl shadow-lg'
                     }
                 });
-            } else {
+            }
+            else if (response.status === 409) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Bir hata oluştu!',
+                    text: 'Aynı gün içinde bu doktor için zaten randevu aldınız bir daha alamazsınız. Anlayışınız için teşekkürler...',
+                    confirmButtonText: 'Tamam',
+                    confirmButtonColor: '#d33'
+                });
+            }
+            else {
                 //alert('Hata oluştu.');
                 Swal.fire({
                     icon: 'error',
