@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Randevu Sonuçları</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -458,16 +460,26 @@
                         </div>
                     </div>
                     <div class="card-footer card-footer-custom">
+                        <!--
                         <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#appointmentModal">
                             <i class="far fa-calendar-check me-2"></i> Randevu Al
 
                         </button>
+                        -->
                         <button class="btn btn-primary w-100 openXpModalBtn"
                                 data-bs-toggle="modal"
                                 data-bs-target="#xpModal"
                                 th:attr="data-doctor-name=${slot.doctorName},
                                    data-clinic-name=${slot.clinicName},
                                    data-hospital-name=${slot.hospitalName},
+                                   data-district-name=${slot.districtName},
+                                   data-city-name=${slot.cityName},
+                                   data-doctor-name=${slot.doctorName},
+                                   data-doctor-id=${slot.doctorId},
+                                   data-clinic-id=${slot.clinicId},
+                                   data-hospital-id=${slot.hospitalId},
+                                   data-city-id=${slot.cityId},
+                                   data-district-id=${slot.districtId},
                                    data-time-range=${#temporals.format(slot.appointmentDateTimeStart, 'HH:mm') + ' - ' + #temporals.format(slot.appointmentDateTimeEnd, 'HH:mm')}">
                             <i class="far fa-calendar-check me-2"></i> Randevu Al 2
 
@@ -483,21 +495,21 @@
             <!-- responsive boyut -->
             <div class="modal-content custom-xp-modal">
                 <div class="modal-header border-0">
-                    <h5 class="modal-title" id="xpModalLabel">Windows XP Stili Modal</h5>
+                    <h5 class="modal-title" id="xpModalLabel">Randevu Onayı</h5>
                     <button type="button" class="btn-close-xp" data-bs-dismiss="modal" aria-label="Kapat"></button>
                 </div>
                 <div class="modal-body">
                     <form>
                         <div class="mb-3 row">
-                            <label for="modalDoctorName" class="col-sm-3 col-form-label">Doktor</label>
+                            <label for="modalCityName" class="col-sm-3 col-form-label">İl</label>
                             <div class="col-sm-9">
-                                <input type="text" readonly class="form-control" id="modalDoctorName" />
+                                <input type="text" readonly class="form-control" id="modalCityName" />
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label for="modalClinicName" class="col-sm-3 col-form-label">Klinik</label>
+                            <label for="modalDistrictName" class="col-sm-3 col-form-label">İlçe</label>
                             <div class="col-sm-9">
-                                <input type="text" readonly class="form-control" id="modalClinicName" />
+                                <input type="text" readonly class="form-control" id="modalDistrictName" />
                             </div>
                         </div>
                         <div class="mb-3 row">
@@ -507,23 +519,36 @@
                             </div>
                         </div>
                         <div class="mb-3 row">
+                            <label for="modalClinicName" class="col-sm-3 col-form-label">Klinik</label>
+                            <div class="col-sm-9">
+                                <input type="text" readonly class="form-control" id="modalClinicName" />
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="modalDoctorName" class="col-sm-3 col-form-label">Doktor</label>
+                            <div class="col-sm-9">
+                                <input type="text" readonly class="form-control" id="modalDoctorName" />
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
                             <label for="modalTimeRange" class="col-sm-3 col-form-label">Saat</label>
                             <div class="col-sm-9">
                                 <input type="text" readonly class="form-control" id="modalTimeRange" />
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="modalDoctorNote" class="form-label">Doktora Not (isteğe bağlı)</label>
+                            <label for="modalDoctorNote" class="form-label">Doktora Not (isteğe bağlı, dişin mi ağrıyor kuşun mu ağrıyor neren ağrıyorsa yazacian!)</label>
                             <textarea class="form-control" id="modalDoctorNote" rows="3" placeholder="Varsa notunuzu yazınız..."></textarea>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Tamam</button>
+                    <button type="button" id="confirmAppointmentBtn" class="btn btn-primary" data-bs-dismiss="modal">Randevuyu Kaydet</button>
                 </div>
             </div>
         </div>
     </div>
+
     <div th:if="${slots == null or slots.isEmpty()}">
         <div class="no-results-container">
             <i class="far fa-calendar-times no-results-icon"></i>
@@ -531,34 +556,12 @@
             <p class="no-results-text">Lütfen farklı bir doktor veya tarih seçerek tekrar deneyiniz.</p>
             <a href="/appointment" class="btn btn-primary">
                 <i class="fas fa-arrow-left me-2"></i> Randevu Arama Sayfasına Dön
-
             </a>
         </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    function selectTimeSlot(button) {
-        const card = button.closest('.card-slot');
-        const doctorName = card.querySelector('.doctor-name').textContent;
-        const timeSlot = card.querySelector('.time-slot').textContent;
-
-        // Seçilen randevu bilgilerini göster
-        alert(`Randevu talebi oluşturuldu:\n\nDoktor: ${doctorName}\nSaat: ${timeSlot}`);
-
-        // Seçili görünüm ekle
-        card.querySelector('.time-slot').classList.add('selected');
-
-        // Butonu devre dışı bırak
-        button.disabled = true;
-        button.innerHTML = '
-									<i class="far fa-check-circle me-2"></i> Randevu Talebi Gönderildi';
-        button.classList.remove('btn-primary');
-        button.classList.add('btn-success');
-        button.style.boxShadow = '0 3px 10px rgba(40, 167, 69, 0.2)';
-    }
-
-</script>
+<!--
 <script>
     document.getElementById("appointmentForm").addEventListener("submit", function(e) {
         e.preventDefault(); // Sayfa yenilenmesin
@@ -580,22 +583,86 @@
         });
     });
 </script>
+-->
 <script>
+    let doctor = "";
+    let clinic ="";
+    let hospital = "";
+    let district = "";
+    let city = "";
+    let time = "";
+    let doctorId = "";
+    let clinicId = "";
+    let hospitalId = "";
+    let districtId = "";
+    let cityId = "";
+    let doctorNote = "";
     document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.openXpModalBtn').forEach(button => {
             button.addEventListener('click', function () {
                 // Butondan verileri al
-                const doctor = button.getAttribute('data-doctor-name');
-                const clinic = button.getAttribute('data-clinic-name');
-                const hospital = button.getAttribute('data-hospital-name');
-                const time = button.getAttribute('data-time-range');
+                doctor = button.getAttribute('data-doctor-name');
+                clinic = button.getAttribute('data-clinic-name');
+                hospital = button.getAttribute('data-hospital-name');
+                district = button.getAttribute('data-district-name');
+                city = button.getAttribute('data-city-name');
+                time = button.getAttribute('data-time-range');
+                doctorNote = document.getElementById('modalDoctorNote').value
+
+                doctorId = button.getAttribute('data-doctor-id');
+                clinicId = button.getAttribute('data-clinic-id');
+                hospitalId = button.getAttribute('data-hospital-id');
+                districtId = button.getAttribute('data-district-id');
+                cityId = button.getAttribute('data-city-id');
 
                 // Modal içindeki inputlara verileri aktarma
-                document.getElementById('modalDoctorName').value = doctor; // input alanına value atıyoruz
-                document.getElementById('modalClinicName').value = clinic;
-                document.getElementById('modalHospitalName').value = hospital;
+                document.getElementById('modalDoctorName').value = "Doktor No: " + doctorId + " Doktor Adı: " + doctor; // input alanına value atıyoruz
+                document.getElementById('modalClinicName').value = "Klinik No: " + clinicId + " Klinik Adı: " + clinic;
+                document.getElementById('modalHospitalName').value = "Hastane No: " + hospitalId + " Hastane Adı: " + hospital;
+                document.getElementById('modalDistrictName').value = "İlçe No: " + districtId + " İlçe Adı: " + district;
+                document.getElementById('modalCityName').value = "Şehir No: " + cityId + " Şehir Adı: " + city;
                 document.getElementById('modalTimeRange').value = time;
             });
+        });
+    });
+
+    document.getElementById('confirmAppointmentBtn').addEventListener('click', function () {
+        const data = {
+            doctorId,
+            doctorName: doctor,
+            clinicId,
+            clinicName: clinic,
+            hospitalId,
+            hospitalName: hospital,
+            districtId,
+            districtName: district,
+            cityId,
+            cityName: city,
+            time,
+            doctorNote: document.getElementById('modalDoctorNote').value
+        };
+
+        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+        fetch('/appointments/confirm', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                [csrfHeader]: csrfToken  // CSRF token'ı header'a ekle
+            },
+            body: JSON.stringify(data),
+            credentials: 'include' // Oturum bilgilerini gönder
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Veri başarıyla gönderildi.');
+            } else {
+                alert('Hata oluştu.');
+            }
+        })
+        .catch(error => {
+            console.error('İstek başarısız:', error);
         });
     });
 </script>

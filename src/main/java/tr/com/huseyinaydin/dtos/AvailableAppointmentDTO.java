@@ -21,6 +21,7 @@ public class AvailableAppointmentDTO {
     private Long cityId;
     private Long doctorId;
 
+    private String doctorNote;
     private String cityName;
     private String districtName;
     private String hospitalName;

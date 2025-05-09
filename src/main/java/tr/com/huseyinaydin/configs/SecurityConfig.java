@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import tr.com.huseyinaydin.security.AppUserDetailsService;
 
 @Configuration
@@ -23,10 +24,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) // CSRF'yi cookie ile tutuyoruz
+                )
                 //.csrf(AbstractHttpConfigurer::disable) // CSRF korumasını devre dışı bırak (gerekiyorsa) asla önermem!
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/register", "/ulogin/**", "/login-success?nameSurname=*",  "/clogin/**", "/images/**", "/css/**", "/js/**", "/api/v1/appointments/search/**").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/appointments/**").hasAuthority("ROLE_USER")
+                        //.requestMatchers(HttpMethod.POST,"/appointments/**").hasAuthority("ROLE_USER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
