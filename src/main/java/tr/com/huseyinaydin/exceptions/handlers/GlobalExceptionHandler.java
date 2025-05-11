@@ -10,25 +10,25 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import tr.com.huseyinaydin.exceptions.InvalidLoginException;
 import tr.com.huseyinaydin.dtos.errors.ErrorResponse;
 
-//@ControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(InvalidLoginException.class)
+    /*@ExceptionHandler(InvalidLoginException.class)
     public ResponseEntity<String> handleInvalidLoginException(InvalidLoginException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-    }
+    }*/
 
     @ExceptionHandler(InvalidLoginException.class)
     public String handleInvalidLoginException(InvalidLoginException ex, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("error", ex.getMessage());
         // Login sayfasına yönlendirme
-        return "redirect:/ulogin?error=true";
+        return "redirect:/errorPage?error=true";
     }
 
     @ExceptionHandler(AuthenticationException.class)
     public String handleAuthenticationException(AuthenticationException ex, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("error", "Kullanıcı adı veya şifre hatalı!");
-        return "redirect:/ulogin?error=true";
+        return "redirect:/errorPage?error=true";
     }
 
     /*@ExceptionHandler(EntityNotFoundException.class)

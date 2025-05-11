@@ -25,6 +25,10 @@ docker run --name thrs_db ^
 
 docker exec -it thrs_db psql -U root -d thrs_db //3️⃣ PostgreSQL Container’ına Bağlan:
 
+docker exec -it thrs_db psql -U root -d postgres; //postgres üzerinden bağlanırsak diğerini silebiliriz. thrs üzerinden bağlansaydık bağlı olduğumuz için silemeyecektik.
+drop database thrs_db;
+create database thrs_db;
+
 Diğer komutlar:
 docker ps                     :: Çalışan container'ları listele
 docker stop thrs_db           :: Container'ı durdur

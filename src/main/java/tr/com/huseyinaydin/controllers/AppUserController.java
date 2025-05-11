@@ -59,6 +59,14 @@ public class AppUserController {
         return page; // Custom login page/özel giriş sayfası tasarımı Thymeleaf template / şablonu
     }
 
+    @GetMapping("/errorPage")
+    public ModelAndView showErrorPage(Model model) {
+        ModelAndView page = new ModelAndView("ulogin");
+        page.addObject("loginRequest", new LoginRequest());
+        page.addObject("errorMessage", "Email veya şifre hatalı!");
+        return page; // Custom login page/özel giriş sayfası tasarımı Thymeleaf template / şablonu
+    }
+
     // Giriş işlemi
     // Özel Giriş işlemi - Spring Security ile çakışmayan endpoint
     @PostMapping("/clogin")

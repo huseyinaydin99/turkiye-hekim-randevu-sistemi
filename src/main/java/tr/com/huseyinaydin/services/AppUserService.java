@@ -16,4 +16,8 @@ public interface AppUserService {
     AppUserDTO getUserById(Long id);
     AppUserDTO getUserByEmail(String email);
     AppUser findUserByEmail(String email);
+
+    AppUser findByEmail(String email);
+    void createPasswordResetTokenForUser(AppUser user, String token);
+    void changeUserPassword(AppUser user, String password);
 }

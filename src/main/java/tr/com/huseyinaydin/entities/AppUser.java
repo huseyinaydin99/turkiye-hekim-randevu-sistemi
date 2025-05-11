@@ -39,4 +39,7 @@ public class AppUser {
 
     @OneToMany(mappedBy = "user")
     private List<Appointment> appointments;
+
+    @Column(name = "enabled")
+    private boolean enabled;
 }

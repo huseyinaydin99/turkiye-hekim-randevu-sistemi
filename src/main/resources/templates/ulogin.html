@@ -217,11 +217,6 @@
     </div>
     <h2 class="form-title">Giriş Yap</h2>
 
-    <!-- Genel Hata Mesajı -->
-    <div th:if="${errorMessage != null}" class="error-message">
-      <span th:text="${errorMessage}"></span>
-    </div>
-
     <form th:action="@{/clogin}" th:object="${loginRequest}" method="post">
       <div class="mb-3"> <!-- Değişiklik: mb-4'ten mb-3'e küçültüldü -->
         <label for="email" class="form-label">E-posta:</label>
@@ -249,12 +244,19 @@
           <span th:errors="*{password}"></span>
         </div>
 
-        <div th:if="${error}" class="invalid-feedback">
-          <span th:text="${error}"></span>
+        <div th:if="${errorMessage}" class="invalid-feedback">
+          <span th:text="${errorMessage}"></span>
         </div>
 
+        <!-- Genel Hata Mesajı -->
+        <!--
+        <div th:if="${errorMessage != null}" class="error-message">
+          <span th:text="${errorMessage}"></span>
+        </div>
+        -->
+
         <div class="forgot-password mt-2">
-          <a href="/forgot-password">Şifremi Unuttum</a>
+          <a href="/reset-password">Şifremi Unuttum</a>
         </div>
       </div>
 

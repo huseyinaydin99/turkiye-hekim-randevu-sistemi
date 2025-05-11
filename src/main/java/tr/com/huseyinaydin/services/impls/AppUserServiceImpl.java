@@ -1,5 +1,6 @@
 package tr.com.huseyinaydin.services.impls;
 
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,25 +16,22 @@ import tr.com.huseyinaydin.dtos.login.LoginRequest;
 import tr.com.huseyinaydin.dtos.register.RegisterRequest;
 import tr.com.huseyinaydin.dtos.register.RegisterResponse;
 import tr.com.huseyinaydin.entities.AppUser;
+import tr.com.huseyinaydin.entities.PasswordResetToken;
 import tr.com.huseyinaydin.exceptions.InvalidLoginException;
 import tr.com.huseyinaydin.exceptions.ResourceNotFoundException;
 import tr.com.huseyinaydin.repositories.AppUserRepository;
+import tr.com.huseyinaydin.repositories.PasswordResetTokenRepository;
 import tr.com.huseyinaydin.services.AppUserService;
 
 @Service
+@RequiredArgsConstructor
 public class AppUserServiceImpl implements AppUserService {
 
     private final AppUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     private final AuthenticationManager authenticationManager;
-
-    public AppUserServiceImpl(AppUserRepository userRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper, AuthenticationManager authenticationManager) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.modelMapper = modelMapper;
-        this.authenticationManager = authenticationManager;
-    }
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Override
     public AppUserDTO getUserById(Long id) {
@@ -90,7 +88,7 @@ public class AppUserServiceImpl implements AppUserService {
         if (authentication.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             AppUser user = userRepository.findByEmail(request.getEmail())
-                    .orElseThrow(() -> new IllegalArgumentException("Bu e-posta ile kayıtlı kullanıcı bulunamadı!"));
+                    .orElseThrow(() -> new InvalidLoginException("Bu e-posta ile kayıtlı kullanıcı bulunamadı!"));
 
             return modelMapper.map(user, AllFieldLoginResponse.class);
         }
@@ -151,5 +149,22 @@ public class AppUserServiceImpl implements AppUserService {
         return authentication != null &&
                 authentication.isAuthenticated() &&
                 !(authentication instanceof AnonymousAuthenticationToken);
+    }
+
+    @Override
+    public AppUser findByEmail(String email) {
+        return userRepository.findByEmail(email).get();
+    }
+
+    @Override
+    public void createPasswordResetTokenForUser(AppUser user, String token) {
+        PasswordResetToken myToken = new PasswordResetToken(token, user);
+        passwordResetTokenRepository.save(myToken);
+    }
+
+    @Override
+    public void changeUserPassword(AppUser user, String password) {
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
     }
 }
