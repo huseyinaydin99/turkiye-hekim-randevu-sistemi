@@ -14,7 +14,6 @@ import tr.com.huseyinaydin.dtos.login.LoginRequest;
 import tr.com.huseyinaydin.dtos.register.RegisterResponse;
 import tr.com.huseyinaydin.dtos.register.RegisterRequest;
 import tr.com.huseyinaydin.services.AppUserService;
-import tr.com.huseyinaydin.session.UserSession;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -27,7 +26,6 @@ import java.util.HashMap;
 public class AppUserController {
 
     private final AppUserService appUserService;
-    private UserSession userSession;
     private final ModelMapper modelMapper;
 
     // Kayıt sayfasını döndürme
@@ -67,6 +65,14 @@ public class AppUserController {
         return page; // Custom login page/özel giriş sayfası tasarımı Thymeleaf template / şablonu
     }
 
+    @GetMapping("/accountNotEnabled")
+    public ModelAndView showAccountNotEnabledPage(Model model) {
+        ModelAndView page = new ModelAndView("ulogin");
+        page.addObject("loginRequest", new LoginRequest());
+        page.addObject("errorMessage", "Hesabınız henüz doğrulanmamış. Lütfen e-posta adresinizi kontrol edin.");
+        return page;
+    }
+
     // Giriş işlemi
     // Özel Giriş işlemi - Spring Security ile çakışmayan endpoint
     @PostMapping("/clogin")
@@ -82,13 +88,13 @@ public class AppUserController {
             return errorView;
         }
 
-        userSession = modelMapper.map(appUserService.login(loginRequest), UserSession.class);
+        var user = appUserService.login(loginRequest);
 
         ModelAndView modelAndView = new ModelAndView("login-success");
 
-        if(userSession != null){
+        if(user != null){
             modelAndView.addObject("searchForm", new AppointmentSearchForm()); // form nesnesini ekliyoruz
-            modelAndView.addObject("nameSurname", userSession.getFullName());
+            modelAndView.addObject("nameSurname", user.getFullName());
             return modelAndView;
         }
         else {

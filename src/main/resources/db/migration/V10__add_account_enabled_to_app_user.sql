@@ -1,0 +1,2 @@
+ALTER TABLE app_user
+    ADD COLUMN account_enabled BOOLEAN DEFAULT FALSE NOT NULL;

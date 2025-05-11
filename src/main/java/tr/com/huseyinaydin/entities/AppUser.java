@@ -42,4 +42,7 @@ public class AppUser {
 
     @Column(name = "enabled")
     private boolean enabled;
+
+    @Column(name = "account_enabled")
+    private boolean accountEnabled = false;
 }

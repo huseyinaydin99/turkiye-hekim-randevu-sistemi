@@ -10,18 +10,25 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import tr.com.huseyinaydin.domain.email.EmailContentBuilder;
+import tr.com.huseyinaydin.domain.email.EmailSender;
 import tr.com.huseyinaydin.dtos.AppUserDTO;
 import tr.com.huseyinaydin.dtos.login.AllFieldLoginResponse;
 import tr.com.huseyinaydin.dtos.login.LoginRequest;
 import tr.com.huseyinaydin.dtos.register.RegisterRequest;
 import tr.com.huseyinaydin.dtos.register.RegisterResponse;
+import tr.com.huseyinaydin.entities.AccountConfirmationToken;
 import tr.com.huseyinaydin.entities.AppUser;
 import tr.com.huseyinaydin.entities.PasswordResetToken;
 import tr.com.huseyinaydin.exceptions.InvalidLoginException;
 import tr.com.huseyinaydin.exceptions.ResourceNotFoundException;
 import tr.com.huseyinaydin.repositories.AppUserRepository;
+import tr.com.huseyinaydin.repositories.ConfirmationTokenRepository;
 import tr.com.huseyinaydin.repositories.PasswordResetTokenRepository;
 import tr.com.huseyinaydin.services.AppUserService;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +39,9 @@ public class AppUserServiceImpl implements AppUserService {
     private final ModelMapper modelMapper;
     private final AuthenticationManager authenticationManager;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
+    private final ConfirmationTokenRepository confirmationTokenRepository;
+    private final EmailSender emailSender;
+    private final EmailContentBuilder emailContentBuilder;
 
     @Override
     public AppUserDTO getUserById(Long id) {
@@ -68,10 +78,30 @@ public class AppUserServiceImpl implements AppUserService {
                 .email(dto.getEmail())
                 .nationalId(dto.getNationalId())
                 .password(passwordEncoder.encode(dto.getPassword()))
-                .role(dto.getRole())
+                .role("USER")
                 .build();
 
-        return modelMapper.map(userRepository.save(user), RegisterResponse.class);
+        AppUser savedUser = userRepository.save(user);
+
+        // 1. Token oluştur
+        String token = UUID.randomUUID().toString();
+        AccountConfirmationToken confirmationToken = new AccountConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                savedUser
+        );
+        confirmationTokenRepository.save(confirmationToken);
+
+        // 2. Mail gönder
+        String link = "http://localhost:8080/account-confirm/confirm?token=" + token;
+        emailSender.send(
+                savedUser.getEmail(),
+                "Türkiye Hekim Randevu Sistemi hesap onay e-postası.",
+                emailContentBuilder.build(savedUser.getFullName(), link)
+        );
+
+        return modelMapper.map(savedUser, RegisterResponse.class);
     }
 
     @Override

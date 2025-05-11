@@ -7,6 +7,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import tr.com.huseyinaydin.exceptions.AccountNotEnabledException;
 import tr.com.huseyinaydin.exceptions.InvalidLoginException;
 import tr.com.huseyinaydin.dtos.errors.ErrorResponse;
 
@@ -23,6 +24,13 @@ public class GlobalExceptionHandler {
         redirectAttributes.addFlashAttribute("error", ex.getMessage());
         // Login sayfasına yönlendirme
         return "redirect:/errorPage?error=true";
+    }
+
+    @ExceptionHandler(AccountNotEnabledException.class)
+    public String handleAccountNotEnabledException(AccountNotEnabledException ex, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("error", ex.getMessage());
+        // Login sayfasına yönlendirme
+        return "redirect:/accountNotEnabled?error=true";
     }
 
     @ExceptionHandler(AuthenticationException.class)

@@ -17,7 +17,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import tr.com.huseyinaydin.configs.handlers.CustomAuthenticationFailureHandler;
 import tr.com.huseyinaydin.security.AppUserDetailsService;
 import tr.com.huseyinaydin.security.filters.CustomAuthenticationFilter;
 import tr.com.huseyinaydin.services.AppUserService;
@@ -44,7 +43,7 @@ public class SecurityConfig {
                 )
                 //.csrf(AbstractHttpConfigurer::disable) // CSRF korumasını devre dışı bırak (gerekiyorsa) asla önermem!
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/register", "/ulogin/**", "/errorPage/**", "/login-success?nameSurname=*", "/clogin/**", "/images/**", "/css/**", "/js/**", "/api/v1/appointments/search/**", "/reset-password/**", "/forgot-password/**").permitAll()
+                        .requestMatchers("/register", "/ulogin/**", "/errorPage/**", "/login-success?nameSurname=*", "/clogin/**", "/images/**", "/css/**", "/js/**", "/api/v1/appointments/search/**", "/reset-password/**", "/forgot-password/**", "/account-confirm/**").permitAll()
                         //.requestMatchers(HttpMethod.POST,"/appointments/**").hasAuthority("ROLE_USER")
                         .anyRequest().authenticated()
                 )
@@ -93,11 +92,6 @@ public class SecurityConfig {
         filter.setFilterProcessesUrl("/clogin"); // Login işlemi için URL
         return filter;
     }*/
-
-    @Bean
-    public AuthenticationFailureHandler authenticationFailureHandler() {
-        return new CustomAuthenticationFailureHandler();
-    }
 
     @Bean
     public UserDetailsService userDetailsService() {
