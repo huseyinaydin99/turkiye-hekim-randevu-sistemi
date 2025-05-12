@@ -1,6 +1,10 @@
 package tr.com.huseyinaydin.repositories;
 
 import jakarta.persistence.LockModeType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
@@ -56,4 +60,40 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     boolean existsByUserAndDoctorAndDate(@Param("user") AppUser user,
                                          @Param("doctor") Doctor doctor,
                                          @Param("date") LocalDate date);
+
+    List<Appointment> findByUser(AppUser user);
+
+    Page<Appointment> findByUserId(Long userId, Pageable pageable);
+
+    Page<Appointment> findByUserAndAppointmentDateTimeAfter(
+            AppUser user,
+            LocalDateTime date,
+            Pageable pageable);
+
+    Page<Appointment> findByUserAndAppointmentDateTimeBefore(
+            AppUser user,
+            LocalDateTime date,
+            Pageable pageable);
+
+    Page<Appointment> findByUserAndDoctorFullNameContainingIgnoreCase(
+            AppUser user,
+            String doctorName,
+            Pageable pageable);
+
+    Page<Appointment> findByUserAndAppointmentDateTimeBetween(
+            AppUser user,
+            LocalDateTime startDate,
+            LocalDateTime endDate,
+            Pageable pageable);
+
+    Page<Appointment> findByUserAndAttended(
+            AppUser user,
+            boolean attended,
+            Pageable pageable);
+
+    Page<Appointment> findByUserAndHospitalIdAndClinicId(
+            AppUser user,
+            Long hospitalId,
+            Long clinicId,
+            Pageable pageable);
 }
