@@ -5,6 +5,35 @@
     <title>Randevularım</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .medical-modal {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .medical-modal .modal-header {
+            background-color: #e3f2fd;
+            border-bottom: 2px solid #bbdefb;
+        }
+        .medical-modal .modal-title {
+            color: #0d47a1;
+            font-weight: 600;
+        }
+        .medical-modal .modal-body {
+            background-color: #f8f9fa;
+        }
+        .medical-info-card {
+            border-left: 4px solid #42a5f5;
+            border-radius: 0;
+        }
+        .medical-info-label {
+            font-weight: 600;
+            color: #1565c0;
+            min-width: 120px;
+        }
+        .medical-status-badge {
+            font-size: 0.9rem;
+            padding: 0.35em 0.65em;
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-4">
@@ -52,8 +81,7 @@
                 <span th:unless="${appointment.attended}" class="badge bg-warning text-dark">Beklemede.</span>
             </td>
             <td>
-                <a th:href="@{/appointments/details/{id}(id=${appointment.id})}"
-                   class="btn btn-info btn-sm">Detaylar</a>
+                <a class="btn btn-info btn-sm btn-details" data-bs-toggle="modal" data-bs-target="#appointmentDetailModal">Detaylar</a>
             </td>
         </tr>
         <tr th:if="${appointments.content.isEmpty()}">
@@ -134,5 +162,119 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Yapısı -->
+<div class="modal fade medical-modal" id="appointmentDetailModal" tabindex="-1" aria-labelledby="appointmentDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="appointmentDetailModalLabel">Randevu Detayları</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card medical-info-card mb-3">
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <span class="medical-info-label">Randevu Tarihi:</span>
+                                <span id="modal-appointment-date"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="medical-info-label">Durum:</span>
+                                <span id="modal-appointment-status" class="badge medical-status-badge"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <span class="medical-info-label">Doktor:</span>
+                                <span id="modal-doctor-name"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="medical-info-label">Uzmanlık:</span>
+                                <span id="modal-doctor-specialty"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <span class="medical-info-label">Hastane:</span>
+                                <span id="modal-hospital-name"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="medical-info-label">Klinik:</span>
+                                <span id="modal-clinic-name"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <span class="medical-info-label">Lokasyon:</span>
+                                <span id="modal-location"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="medical-info-label">Not:</span>
+                                <span id="modal-note"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tıbbi ek bilgiler bölümü -->
+                <div class="medical-notes-section mt-3">
+                    <h6 class="text-primary mb-3"><i class="bi bi-clipboard2-pulse"></i> Tıbbi Notlar</h6>
+                    <div class="alert alert-info">
+                        <small id="modal-medical-notes">Randevu öncesi hazırlık bilgileri burada gösterilecektir.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-primary" id="printAppointmentBtn">
+                    <i class="bi bi-printer"></i> Yazdır
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- JavaScript Kodları -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const detailButtons = document.querySelectorAll('.btn-details');
+        const modal = new bootstrap.Modal(document.getElementById('appointmentDetailModal'));
+
+        detailButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const row = this.closest('tr');
+
+                // Modal içeriğini doldur
+                document.getElementById('modal-appointment-date').textContent = row.querySelector('td:nth-child(1)').textContent;
+                document.getElementById('modal-doctor-name').textContent = row.querySelector('td:nth-child(2)').textContent;
+                document.getElementById('modal-clinic-name').textContent = row.querySelector('td:nth-child(3)').textContent;
+                document.getElementById('modal-hospital-name').textContent = row.querySelector('td:nth-child(4)').textContent;
+                document.getElementById('modal-location').textContent = row.querySelector('td:nth-child(5)').textContent;
+
+                // Durum bilgisini kopyala ve formatla
+                const statusBadge = row.querySelector('td:nth-child(6) span').cloneNode(true);
+                statusBadge.classList.add('medical-status-badge');
+                document.getElementById('modal-appointment-status').innerHTML = '';
+                document.getElementById('modal-appointment-status').appendChild(statusBadge);
+
+                // Örnek ek bilgiler (gerçek uygulamada veritabanından çekilecek)
+                document.getElementById('modal-note').textContent = "Hasta özel notu: " + (row.dataset.note || "Not bulunmamaktadır.");
+                document.getElementById('modal-medical-notes').textContent =
+                    "• Randevu öncesi 8 saat aç kalınması gerekmektedir.\n" +
+                    "• Yanınızda önceki tetkik sonuçlarınızı getiriniz.\n" +
+                    "• En az 15 dakika önce gelerek kayıt yaptırınız.";
+
+                // Modalı göster
+                modal.show();
+            });
+        });
+
+        // Yazdır butonu işlevselliği
+        document.getElementById('printAppointmentBtn').addEventListener('click', function() {
+            window.print();
+        });
+    });
+</script>
 </body>
 </html>
