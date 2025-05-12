@@ -17,9 +17,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.web.cors.CorsConfiguration;
 import tr.com.huseyinaydin.security.AppUserDetailsService;
 import tr.com.huseyinaydin.security.filters.CustomAuthenticationFilter;
 import tr.com.huseyinaydin.services.AppUserService;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -38,6 +41,14 @@ public class SecurityConfig {
         AuthenticationManager authenticationManager = authenticationManagerBuilder.build();*/
 
         http
+                /*.cors(cors -> cors.configurationSource(request -> {
+                    CorsConfiguration config = new CorsConfiguration();
+                    config.setAllowedOrigins(List.of("http://localhost:8080")); // FE adresi
+                    config.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE"));
+                    config.setAllowedHeaders(List.of("*"));
+                    config.setAllowCredentials(true);
+                    return config;
+                }))*/
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) // CSRF'yi cookie ile tutuyoruz
                 )

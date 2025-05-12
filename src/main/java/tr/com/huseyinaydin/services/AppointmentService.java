@@ -44,4 +44,8 @@ public interface AppointmentService {
             Long clinicId,
             int page,
             int size);
+
+    void toggleAppointmentStatus(Long appointmentId, String username);
+
+    Appointment findById(Long id);
 }

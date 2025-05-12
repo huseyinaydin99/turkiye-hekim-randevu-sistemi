@@ -57,6 +57,9 @@ public class Appointment {
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
+    @Column(name = "statu")
+    private boolean statu;
+
     public Appointment(LocalDateTime appointmentDateTime, boolean attended, String noteToDoctor, AppUser user, Doctor doctor, Clinic clinic, Hospital hospital, District district, City city) {
         this.appointmentDateTime = appointmentDateTime;
         this.attended = attended;

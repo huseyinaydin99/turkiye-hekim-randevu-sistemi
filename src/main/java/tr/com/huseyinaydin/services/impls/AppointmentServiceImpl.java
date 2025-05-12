@@ -1,11 +1,13 @@
 package tr.com.huseyinaydin.services.impls;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tr.com.huseyinaydin.dtos.appointments.AppointmentSearchForm;
 import tr.com.huseyinaydin.entities.AppUser;
 import tr.com.huseyinaydin.entities.Appointment;
@@ -108,5 +110,26 @@ public class AppointmentServiceImpl implements AppointmentService {
                 hospitalId,
                 clinicId,
                 pageable);
+    }
+
+    public Appointment findById(Long id){
+        return appointmentRepository.findById(id).get();
+    }
+
+    @Transactional
+    public void toggleAppointmentStatus(Long appointmentId, String username) {
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new EntityNotFoundException("Randevu bulunamadı"));
+
+        if (!appointment.getUser().getEmail().equals(username)) {
+            throw new SecurityException("Bu işlem için yetkiniz yok");
+        }
+
+        if (appointment.getAppointmentDateTime().isBefore(LocalDateTime.now())) {
+            throw new IllegalStateException("Geçmiş randevuların durumu değiştirilemez");
+        }
+
+        appointment.setStatu(!appointment.isStatu());
+        appointmentRepository.save(appointment);
     }
 }

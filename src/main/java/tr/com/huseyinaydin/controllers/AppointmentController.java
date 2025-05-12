@@ -18,7 +18,9 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/appointments")
@@ -173,5 +175,24 @@ public class AppointmentController {
         model.addAttribute("pageSizes", List.of(5, 10, 20, 50));
 
         return "appointmentList";
+    }
+
+    @PatchMapping("/{id}/toggle-status")
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> toggleAppointmentStatus(
+            @PathVariable Long id,
+            @AuthenticationPrincipal AppUserDetails currentUser
+            /*,@RequestHeader("X-XSRF-TOKEN") String xsrfToken*/) {
+
+        Map<String, String> response = new HashMap<>();
+        try {
+            appointmentService.toggleAppointmentStatus(id, currentUser.getUsername());
+            response.put("status", "success");
+            response.put("newStatus", appointmentService.findById(id).isStatu() ? "active" : "passive");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 }
